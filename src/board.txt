@@ -35,3 +35,4 @@ KEY:
 	N = NonSquare
 	D = DoorSquare
 	T = TunnelSquare
+	X = Terminate
