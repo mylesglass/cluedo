@@ -35,3 +35,6 @@ KEY:
 	N = NonSquare
 	D = DoorSquare
 	T = TunnelSquare
+	X = Terminate
+	
+I'm just putting a line here to test that my directories are set up correctly
