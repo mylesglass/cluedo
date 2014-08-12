@@ -16,17 +16,17 @@ import cluedo.Position;
  */
 public class DoorSquare implements Square {
 	private Position position;
-	private HallSquare hallSquare;
+	//private HallSquare hallSquare;
 	//private Room room;
 	private Color color;
-	
+
 	public DoorSquare(Position position) {
 		this.position = position;
 		//this.hallSquare = hs;
 		//this.room = room;
 		this.color = Color.RED;
 	}
-	
+
 	/**
 	 * Get the position of this square
 	 * @return position
@@ -34,7 +34,7 @@ public class DoorSquare implements Square {
 	public Position getPosition() {
 		return position;
 	}
-	
+
 	/**
 	 * Get the color of this square
 	 * @return color
@@ -42,7 +42,7 @@ public class DoorSquare implements Square {
 	public Color getColor() {
 		return color;
 	}
-	
+
 	/**
 	 * Print out char representing type of square. For testing purposes.
 	 */
