@@ -3,7 +3,7 @@ package cluedo.cards;
 /**
  * Room Card
  * xxx
- * @author myles
+ * @author myles && Neal
  *
  */
 public class RoomCard implements Card {
