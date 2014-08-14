@@ -41,15 +41,10 @@ public class Game {
 		players = new ArrayList<Player>();
 		for(Card c: deck){
 			if(c instanceof CharacterCard){
-
 				CharacterCard card = (CharacterCard)c ;
-
                 Player player = new Player(card);
-
                 players.add(player);
-
 				MyUtils.Log("[Game] constructing players from deck: " + c.getName());
-
 			}
 		}
 
@@ -60,8 +55,6 @@ public class Game {
 
 
 		redraw();
-
-		rollDice();
 	}
 
 	/**

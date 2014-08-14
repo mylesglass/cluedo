@@ -90,6 +90,7 @@ public class BoardParser {
 		if(type == 'R') return new RoomSquare(position);
 		if(type == 'N') return new NonSquare(position);
 		if(type == 'D') return new DoorSquare(position);
+		if(type == 'S') return new SpawnSquare(position);
 		return null;
 	}
 }
