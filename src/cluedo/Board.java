@@ -1,5 +1,7 @@
 package cluedo;
 
+import java.awt.Graphics;
+
 import cluedo.squares.*;
 
 /**
@@ -56,5 +58,19 @@ public class Board {
 	 */
 	public int getHeight() {
 		return this.height;
+	}
+
+	/**
+	 * Draws the board on supplied graphics objects.
+	 * @param graphics object to draw on
+	 * @param square size
+	 * @param menu bar size
+	 */
+	public void draw(Graphics g, int squareSize, int menuSize) {
+		for(int i = 0; i < this.getHeight(); i++) {
+			for(int j = 0; j < this.getWidth(); j++) {
+				this.getSquareAt(j, i).draw(g, squareSize, menuSize);
+			}
+		}
 	}
 }

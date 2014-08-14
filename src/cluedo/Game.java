@@ -25,7 +25,7 @@ public class Game {
 		MyUtils.Log("[Game] Board Parsed and Constructed.");
 
 		// Set up initial board.
-		gui.setupInterface(board.getWidth(), board.getHeight());
+		gui.initialiseGameInterface(board.getWidth(), board.getHeight());
 		gui.updateBoard(board);
 		MyUtils.Log("[Game] GUI dimensions set and board supplied.");
 

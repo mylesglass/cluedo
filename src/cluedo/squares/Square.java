@@ -1,6 +1,7 @@
 package cluedo.squares;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import cluedo.Position;
 
@@ -14,4 +15,5 @@ public interface Square {
 	public Position getPosition();
 	public void print();
 	public Color getColor();
+	public void draw(Graphics g, int squareSize, int yOffset);
 }

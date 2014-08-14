@@ -15,27 +15,9 @@ import cluedo.squares.Square;
  * @author myles
  *
  */
-public class GUI {
-	private final int SQUARE_SIZE = 20;
-	private final int PANEL_SIZE = 300;
-	private final int MENU_BAR_SIZE = 50;
-
-	private int gameWidth;
-	private int gameHeight;
-
-	private int boardWidth;
-	private int boardHeight;
-
-	private int checkPanelWidth;
-	private int checkPanelHeight;
-
-	private int playerPanelWidth;
-	private int playerPanelHeight;
-
+public class OldGUI {
 	private int width;
 	private int height;
-
-	// GUI Components
 	private JFrame frame;
 	private JComponent drawing;
 	private Board board;
@@ -44,11 +26,11 @@ public class GUI {
 	/**
 	 * Construct GUI Component for displaying any information needed for the user to play game
 	 */
-	public GUI() {
+	public OldGUI() {
 
 	}
 
-
+	private final int SQUARESIZE = 15;
 
 	/**
 	 * Sets up various interface components needed to display GUI
@@ -56,25 +38,15 @@ public class GUI {
 	 * @param boardHeight
 	 */
 	@SuppressWarnings("serial")
-	public void initialiseGameInterface(int boardWidth, int boardHeight) {
+	public void setupInterface(int boardWidth, int boardHeight) {
 		// Set dimensions with regards to board size
-		this.boardWidth = boardWidth * SQUARE_SIZE;
-		this.boardHeight = boardHeight * SQUARE_SIZE; // plus the hieght of any other components
-
-		// Set dimensions for other panels
-		this.checkPanelWidth = PANEL_SIZE;
-		this.checkPanelHeight = this.boardHeight;
-
-		this.playerPanelWidth = this.boardWidth + checkPanelWidth;
-		this.playerPanelHeight = PANEL_SIZE;
-
-		this.gameWidth = playerPanelWidth;
-		this.gameHeight = playerPanelHeight + this.boardHeight + MENU_BAR_SIZE;
+		this.width = boardWidth * SQUARESIZE;
+		this.height = boardHeight * SQUARESIZE; // plus the hieght of any other components
 
 		// Set Frame
-		frame = new JFrame("Guess Who");
+		frame = new JFrame("Cluedo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(this.gameWidth, this.gameHeight);
+		frame.setSize(this.width, this.height);
 
 		// Drawing Component
 		drawing = new JComponent() {
@@ -108,27 +80,8 @@ public class GUI {
 	 * Executes the correct method for drawing depending on the state of the screen.
 	 */
 	private void redraw(Graphics g) {
-		drawBackgrounds(g);
 		if(STATE.equals("GAME")) drawGame(g);
 	}
-
-	/**
-	 * Draws the background panels for each of the panels
-	 */
-	private void drawBackgrounds(Graphics g) {
-		// Board
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, MENU_BAR_SIZE, boardWidth, boardHeight);
-
-		// CheckList
-		g.setColor(Color.WHITE);
-		g.fillRect(boardWidth, MENU_BAR_SIZE, checkPanelWidth, checkPanelHeight);
-
-		// Player Panel
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, MENU_BAR_SIZE + boardHeight, playerPanelWidth, playerPanelHeight);
-	}
-
 
 	/**
 	 * Draws the main game components onto the screen.
@@ -136,11 +89,29 @@ public class GUI {
 	 * @param graphics to draw to.
 	 */
 	private void drawGame(Graphics g) {
-		board.draw(g, SQUARE_SIZE, MENU_BAR_SIZE);
+		drawBoard(g);
 		// Draws Characters on board, and anything else that overlays board
 
 		// Draws Lower Control Panel
 
 	}
 
+	/**
+	 * Draws all board squares onto supplied graphics element
+	 * @param g
+	 */
+	private void drawBoard(Graphics g) {
+		// Draws board squares,
+		for(int i = 0; i < board.getHeight(); i++) {
+			for(int j = 0; j < board.getWidth(); j++) {
+				// For each square within board, draw a 15 pixel coloured square to represent it, with a black 1px border.
+				Square current = board.getSquareAt(j, i);
+				g.setColor(current.getColor());
+				g.fillRect(j * 15, i * 15, 15, 15);
+				g.setColor(Color.BLACK);
+				g.drawRect(j*15, i*15, 15, 15);
+			}
+		}
+
+	}
 }

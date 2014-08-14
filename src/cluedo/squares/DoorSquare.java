@@ -1,6 +1,7 @@
 package cluedo.squares;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import cluedo.Position;
 
@@ -25,6 +26,7 @@ public class DoorSquare implements Square {
 		//this.hallSquare = hs;
 		//this.room = room;
 		this.color = Color.RED;
+
 	}
 
 	/**
@@ -49,4 +51,16 @@ public class DoorSquare implements Square {
 	public void print() {
 		System.out.print('D');
 	}
+
+	/**
+	 * Draws square on supplied graphics object, at defined square size.
+	 * @param graphics object to draw on
+	 * @param int size of square
+	 * @param y Offset cause by menu bar above
+	 */
+	public void draw(Graphics g, int squareSize, int yOffset) {
+		g.setColor(this.color);
+		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
+	}
+
 }
