@@ -28,7 +28,7 @@ public class Checklist {
 		//all Room cards: false.
 		checklist.put("Kitchen",false);
 		checklist.put("Ballroom",false);
-		checklist.put("conservatory",false);
+		checklist.put("Conservatory",false);
 		checklist.put("Billiard Room",false);
 		checklist.put("Library",false);
 		checklist.put("Study",false);
