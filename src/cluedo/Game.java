@@ -29,7 +29,10 @@ public class Game {
 		gui.updateBoard(board);
 		MyUtils.Log("[Game] GUI dimensions set and board supplied.");
 
+
 		redraw();
+
+		rollDice();
 	}
 
 	/**
@@ -45,6 +48,18 @@ public class Game {
 	 */
 	private void redraw() {
 		gui.draw();
+	}
+
+	/**
+	 * Rolls one die and return an integer in the range of 1 to 6.
+	 * Displays rolling graphic in GUI.
+	 * @return random int
+	 */
+	private int rollDice() {
+		int random = (int) (1 + Math.random() * 6);
+		MyUtils.Log("[Game] User has rolled a: "+random);
+		gui.roll(random);
+		return random;
 	}
 
 	@SuppressWarnings("unused")

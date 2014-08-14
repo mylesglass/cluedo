@@ -14,4 +14,12 @@ class MyUtils {
 			System.out.println(input);
 		}
 	}
+
+	public static void Pause(int milliseconds) {
+		try {
+		    Thread.sleep(milliseconds);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+	}
 }
