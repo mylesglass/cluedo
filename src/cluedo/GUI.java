@@ -48,8 +48,6 @@ public class GUI {
 
 	}
 
-
-
 	/**
 	 * Sets up various interface components needed to display GUI
 	 * @param boardWidth
@@ -142,5 +140,4 @@ public class GUI {
 		// Draws Lower Control Panel
 
 	}
-
 }
