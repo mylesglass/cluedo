@@ -3,6 +3,7 @@ package cluedo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
@@ -39,7 +40,9 @@ public class GUI {
 	private JFrame frame;
 	private JComponent drawing;
 	private Board board;
-	private String STATE = "GAME";
+	private String state = "GAME";
+
+	private Font diceFont = new Font("Dialog", Font.PLAIN, 36);
 
 	/**
 	 * Construct GUI Component for displaying any information needed for the user to play game
@@ -47,8 +50,6 @@ public class GUI {
 	public GUI() {
 
 	}
-
-
 
 	/**
 	 * Sets up various interface components needed to display GUI
@@ -84,6 +85,8 @@ public class GUI {
 		};
 		frame.add(drawing, BorderLayout.CENTER);
 
+
+		// Once all set up, make it visible
 		frame.setVisible(true);
 	}
 
@@ -104,31 +107,53 @@ public class GUI {
 		this.board = board;
 	}
 
+	public void setState(String state) {
+		this.state = state;
+		draw();
+	}
+
+	/**
+	 * Visually communicated to user that the mouse has been rolled.
+	 * Draws rolling graphic, and displays result.
+	 * @param result
+	 */
+	private int result;
+	private boolean rolling;
+
+	public void roll(int result) {
+		int interval = 2; // full time of roll in milliseconds
+		rolling = true;
+		while(interval < 800) {
+			this.result = (int) (1 + Math.random() * 6);
+			draw();
+			MyUtils.Pause(interval);
+			interval = (int) (interval * 1.5);
+
+		}
+		this.result = result;
+		draw();
+	}
+
+	/**
+	 * Draws Graphical repersentation of dice result.
+	 * @param g
+	 */
+	private final int DICE_SIZE = 150;
+
+	private void drawDice(Graphics g) {
+		g.setFont(diceFont);
+		g.setColor(Color.WHITE);
+		g.fillOval((boardWidth / 2) - (DICE_SIZE / 2), (boardHeight / 2) - (DICE_SIZE / 2), DICE_SIZE, DICE_SIZE);
+		g.setColor(Color.DARK_GRAY);
+		g.drawString(""+this.result, (boardWidth / 2) - 10, (boardHeight / 2) + 10);
+	}
+
 	/**
 	 * Executes the correct method for drawing depending on the state of the screen.
 	 */
 	private void redraw(Graphics g) {
-		drawBackgrounds(g);
-		if(STATE.equals("GAME")) drawGame(g);
+		if(state.equals("GAME")) drawGame(g);
 	}
-
-	/**
-	 * Draws the background panels for each of the panels
-	 */
-	private void drawBackgrounds(Graphics g) {
-		// Board
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, MENU_BAR_SIZE, boardWidth, boardHeight);
-
-		// CheckList
-		g.setColor(Color.WHITE);
-		g.fillRect(boardWidth, MENU_BAR_SIZE, checkPanelWidth, checkPanelHeight);
-
-		// Player Panel
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, MENU_BAR_SIZE + boardHeight, playerPanelWidth, playerPanelHeight);
-	}
-
 
 	/**
 	 * Draws the main game components onto the screen.
@@ -136,11 +161,34 @@ public class GUI {
 	 * @param graphics to draw to.
 	 */
 	private void drawGame(Graphics g) {
+		drawCheckPanel(g);
+		drawPlayerPanel(g);
+		// draw board
 		board.draw(g, SQUARE_SIZE, MENU_BAR_SIZE);
+
 		// Draws Characters on board, and anything else that overlays board
+
 
 		// Draws Lower Control Panel
 
+		if(rolling) drawDice(g);
 	}
 
+	private void drawPlayerPanel(Graphics g) {
+		// background
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, MENU_BAR_SIZE + boardHeight, playerPanelWidth, playerPanelHeight);
+
+		g.setColor(Color.WHITE);
+		g.drawString("PlayerPanel", 50, MENU_BAR_SIZE + boardHeight + 50);
+	}
+
+	private void drawCheckPanel(Graphics g) {
+		// background
+		g.setColor(Color.WHITE);
+		g.fillRect(boardWidth, MENU_BAR_SIZE, checkPanelWidth, checkPanelHeight);
+
+		g.setColor(Color.BLACK);
+		g.drawString("Checklist", boardWidth + 50, MENU_BAR_SIZE + 50);
+	}
 }
