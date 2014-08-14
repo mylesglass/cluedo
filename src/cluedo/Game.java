@@ -49,11 +49,10 @@ public class Game {
 		}
 
 		// Set up initial board.
-		gui.initialiseGameInterface(board.getWidth(), board.getHeight());
-		gui.updateBoard(board);
+		gui.initialiseGameInterface(board);
 		MyUtils.Log("[Game] GUI dimensions set and board supplied.");
 
-
+		// Start GUI on Menu
 		redraw();
 	}
 
@@ -69,7 +68,9 @@ public class Game {
 	 * Redraw GUI
 	 */
 	private void redraw() {
-		gui.draw();
+		gui.drawBoard();
+		gui.drawCheckList();
+		gui.drawPlayerPanel();
 	}
 
 	/**
@@ -80,7 +81,7 @@ public class Game {
 	private int rollDice() {
 		int random = (int) (1 + Math.random() * 6);
 		MyUtils.Log("[Game] User has rolled a: "+random);
-		gui.roll(random);
+	//	gui.roll(random);
 		return random;
 	}
 

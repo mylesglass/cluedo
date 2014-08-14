@@ -3,11 +3,16 @@ package cluedo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import cluedo.squares.Square;
 
@@ -19,7 +24,7 @@ import cluedo.squares.Square;
 public class GUI {
 	private final int SQUARE_SIZE = 20;
 	private final int PANEL_SIZE = 300;
-	private final int MENU_BAR_SIZE = 50;
+	private final int MENU_BAR_SIZE = 60;
 
 	private int gameWidth;
 	private int gameHeight;
@@ -37,8 +42,11 @@ public class GUI {
 	private int height;
 
 	// GUI Components
-	private JFrame frame;
-	private JComponent drawing;
+	private BoardPanel boardPanel;
+	private CheckListPanel checkListPanel;
+	private PlayerPanel playerPanel;
+	private JFrame container;
+
 	private Board board;
 	private String state = "GAME";
 
@@ -57,10 +65,12 @@ public class GUI {
 	 * @param boardHeight
 	 */
 	@SuppressWarnings("serial")
-	public void initialiseGameInterface(int boardWidth, int boardHeight) {
+	public void initialiseGameInterface(Board board) {
+		this.board = board;
+
 		// Set dimensions with regards to board size
-		this.boardWidth = boardWidth * SQUARE_SIZE;
-		this.boardHeight = boardHeight * SQUARE_SIZE; // plus the hieght of any other components
+		this.boardWidth = board.getWidth() * SQUARE_SIZE;
+		this.boardHeight = board.getHeight() * SQUARE_SIZE; // plus the hieght of any other components
 
 		// Set dimensions for other panels
 		this.checkPanelWidth = PANEL_SIZE;
@@ -73,122 +83,106 @@ public class GUI {
 		this.gameHeight = playerPanelHeight + this.boardHeight + MENU_BAR_SIZE;
 
 		// Set Frame
-		frame = new JFrame("Guess Who");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(this.gameWidth, this.gameHeight);
+		container = new JFrame("Guess Who");
+		container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		container.setSize(this.gameWidth, this.gameHeight + 25);
+		container.setLayout(null);
 
 		// Drawing Component
-		drawing = new JComponent() {
-			protected void paintComponent(Graphics g) {
-				redraw(g);
-			}
-		};
-		frame.add(drawing, BorderLayout.CENTER);
 
+		boardPanel = new BoardPanel(board);
+		boardPanel.setPreferredSize(new Dimension(this.boardWidth, this.boardHeight));
+
+		checkListPanel = new CheckListPanel(checkPanelWidth, checkPanelHeight);
+		checkListPanel.setPreferredSize(new Dimension(this.checkPanelWidth, this.checkPanelHeight));
+
+		playerPanel = new PlayerPanel(playerPanelWidth, playerPanelHeight);
+		checkListPanel.setPreferredSize(new Dimension(this.playerPanelWidth, this.playerPanelHeight));
+
+
+		container.add(boardPanel);
+		boardPanel.setBounds(0, MENU_BAR_SIZE + 0, boardWidth, boardHeight);
+
+		container.add(checkListPanel);
+		checkListPanel.setBounds(boardWidth, MENU_BAR_SIZE + 0, PANEL_SIZE, boardHeight);
+
+		container.add(playerPanel);
+		playerPanel.setBounds(0, MENU_BAR_SIZE + boardHeight, gameWidth, PANEL_SIZE);
 
 		// Once all set up, make it visible
-		frame.setVisible(true);
+		container.setVisible(true);
 	}
 
-	/**
-	 * Draws
-	 */
-	public void draw() {
-		drawing.repaint();
+	public void drawBoard() {
+		boardPanel.repaint();
 	}
 
-	/**
-	 * Update the reference to the games board.
-	 * @param board
-	 */
-	public void updateBoard(Board board) {
-		// I couldn't really think of another simple solution to get a reference ot the board
-		// in the gui class, and I needed it as I want to draw everything in here.
+	public void drawCheckList() {
+		checkListPanel.repaint();
+	}
+
+	public void drawPlayerPanel() {
+		playerPanel.repaint();
+	}
+
+}
+
+class BoardPanel extends JPanel {
+	private final int SQUARE_SIZE = 20;
+	private int width;
+	private int height;
+	private Board board;
+
+	public BoardPanel(Board board) {
 		this.board = board;
+		this.width = board.getWidth() * SQUARE_SIZE;
+		this.height = board.getHeight() * SQUARE_SIZE;
+		MyUtils.Log("[BoardPanel] Board Panel Created. Size: "+this.width+", "+this.height);
 	}
 
-	public void setState(String state) {
-		this.state = state;
-		draw();
-	}
-
-	/**
-	 * Visually communicated to user that the mouse has been rolled.
-	 * Draws rolling graphic, and displays result.
-	 * @param result
-	 */
-	private int result;
-	private boolean rolling;
-
-	public void roll(int result) {
-		int interval = 2; // full time of roll in milliseconds
-		rolling = true;
-		while(interval < 800) {
-			this.result = (int) (1 + Math.random() * 6);
-			draw();
-			MyUtils.Pause(interval);
-			interval = (int) (interval * 1.5);
-
-		}
-		this.result = result;
-		draw();
-	}
-
-	/**
-	 * Draws Graphical repersentation of dice result.
-	 * @param g
-	 */
-	private final int DICE_SIZE = 150;
-
-	private void drawDice(Graphics g) {
-		g.setFont(diceFont);
-		g.setColor(Color.WHITE);
-		g.fillOval((boardWidth / 2) - (DICE_SIZE / 2), (boardHeight / 2) - (DICE_SIZE / 2), DICE_SIZE, DICE_SIZE);
-		g.setColor(Color.DARK_GRAY);
-		g.drawString(""+this.result, (boardWidth / 2) - 10, (boardHeight / 2) + 10);
-	}
-
-	/**
-	 * Executes the correct method for drawing depending on the state of the screen.
-	 */
-	private void redraw(Graphics g) {
-		if(state.equals("GAME")) drawGame(g);
-	}
-
-	/**
-	 * Draws the main game components onto the screen.
-	 * This includes the board and the control panel for the game.
-	 * @param graphics to draw to.
-	 */
-	private void drawGame(Graphics g) {
-		drawCheckPanel(g);
-		drawPlayerPanel(g);
-		// draw board
-		board.draw(g, SQUARE_SIZE, MENU_BAR_SIZE);
-
-		// Draws Characters on board, and anything else that overlays board
-
-
-		// Draws Lower Control Panel
-
-		if(rolling) drawDice(g);
-	}
-
-	private void drawPlayerPanel(Graphics g) {
-		// background
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, MENU_BAR_SIZE + boardHeight, playerPanelWidth, playerPanelHeight);
-
-		g.setColor(Color.WHITE);
-		g.drawString("PlayerPanel", 50, MENU_BAR_SIZE + boardHeight + 50);
-	}
-
-	private void drawCheckPanel(Graphics g) {
-		// background
-		g.setColor(Color.WHITE);
-		g.fillRect(boardWidth, MENU_BAR_SIZE, checkPanelWidth, checkPanelHeight);
-
-		g.setColor(Color.BLACK);
-		g.drawString("Checklist", boardWidth + 50, MENU_BAR_SIZE + 50);
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(0, 0, width, height);
+		board.draw(g, SQUARE_SIZE, 0);
 	}
 }
+
+class CheckListPanel extends JPanel {
+	private int width;
+	private int height;
+
+	public CheckListPanel(int width, int height) {
+		this.width = width;
+		this.height = height;
+		MyUtils.Log("[CheckListPanel] Check List Panel Created. Size: "+width+", "+height);
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.RED);
+		g.fillRect(0, 0, width, height);
+	}
+}
+
+class PlayerPanel extends JPanel {
+	private int width;
+	private int height;
+
+	public PlayerPanel(int width, int height) {
+		this.width = width;
+		this.height = height;
+		MyUtils.Log("[PlayerPanel] Player Panel Created. Size: "+width+", "+height);
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0, width, height);
+	}
+}
+
+
