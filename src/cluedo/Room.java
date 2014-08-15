@@ -1,5 +1,7 @@
 package cluedo;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Set;
 
 import cluedo.cards.Card;
@@ -21,25 +23,26 @@ public class Room {
 
 	private String name;
 	private RoomCard room;
-	private Set<RoomSquare> contains;
+	private ArrayList<RoomSquare> roomsquares;
 
 	public Room(RoomCard c){
 		this.name= c.getName();
 		room = c;
+		this.roomsquares = new ArrayList<RoomSquare>();
 	}
 	/**
 	 * add a single square to the set of squares in the room.
 	 */
 	public void addSquare( RoomSquare square){
-		contains.add(square);
+		this.roomsquares.add(square);
 
 	}
 	/**
 	 * maps the set of room squares contained in a sepicified room to
 	 * the room.
 	 */
-	public Set<RoomSquare> getSquares(){
-		return this.contains;
+	public ArrayList<RoomSquare> getSquares(){
+		return this.roomsquares;
 	}
 	/**
 	 * Get the name of this room

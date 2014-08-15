@@ -10,8 +10,8 @@ public class Player {
 
 
 	private String name;
-    private ArrayList<Card> hand = new ArrayList<Card>();
-    private Checklist checklist = new Checklist();
+    private ArrayList<Card> hand;
+    private Checklist checklist;
     private Position position;
      /**
       * creates a player with all the necessary equipment for playing
@@ -21,8 +21,21 @@ public class Player {
       */
 	public Player(CharacterCard card){
 		this.name = card.getName();
+		hand = new ArrayList<Card>();
+	}
 
+	/**
+	 * Add a new CheckList to the players inventory
+	 */
+	public void addChecklist(Checklist cl) {
+		this.checklist = cl;
+	}
 
+	/**
+	 * Get checklist
+	 */
+	public Checklist getChecklist() {
+		return this.checklist;
 	}
 
 	/**
@@ -67,7 +80,6 @@ public class Player {
 		return false;
 
 	}
-
 
 	/**
 	 * sets position of player.

@@ -1,8 +1,10 @@
 package cluedo;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import cluedo.squares.*;
+import cluedo.exceptions.*;
 
 /**
  * Responsible for holding all information regarding the current state of the board.
@@ -23,6 +25,26 @@ public class Board {
 		this.width = width;
 		this.height = height;
 		this.board = new Square[width][height];
+	}
+
+	/**
+	 * Initialises board for playing use.
+	 * 	-Sets adjacent hall squares for each door
+	 * 	-Sets doors to rooms
+	 * 	-Assigns Spawn points to each character/player
+	 */
+	public void initBoard() {
+		try {
+			addDoors();
+		}
+		catch(InvalidBoardException e) {
+			e.printStackTrace();
+			MyUtils.End("Invalid Board! Follow the rules son!");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			MyUtils.End("Fatal Error! I don't know how this happened!");
+		}
 	}
 
 	/**
@@ -73,4 +95,66 @@ public class Board {
 			}
 		}
 	}
+
+	public ArrayList<Room> addSquaresToRooms(ArrayList<Room> rooms) {
+		for(int h = 0; h < this.height; h++) {
+			for(int w = 0; w < this.width; w++) {
+				if(board[w][h] instanceof RoomSquare) {
+					int roomnum = ((RoomSquare)board[w][h]).getRoomNumber() -1;
+					rooms.get(roomnum).addSquare((RoomSquare)board[w][h]);
+				}
+			}
+		}
+
+		return rooms;
+	}
+
+
+	/**
+	 * Creates links between doors and the hall squares they are linked to.
+	 *
+	 */
+	private void addDoors() throws InvalidBoardException {
+		int doorCount = 0;
+		// Loop through each column
+		for(int j = 0; j < this.height; j++) {
+			//Loop through each row
+			for(int i = 0; i < this.width; i++) {
+				if(board[i][j] instanceof DoorSquare) {
+					doorCount++;
+					// Link to Hallsquare, throw exception if board is constructed wrong
+					// West
+					if(board[i][j-1] instanceof HallSquare) {
+						((DoorSquare)board[i][j]).setHallSquare((HallSquare) board[i][j-1]);
+						((HallSquare) board[i][j-1]).setDoorNear(true);
+						continue;
+					}
+					// East
+					else if(board[i][j+1] instanceof HallSquare) {
+						((DoorSquare)board[i][j]).setHallSquare((HallSquare) board[i-1][j+1]);
+						((HallSquare) board[i][j+1]).setDoorNear(true);
+						continue;
+					}
+					// South
+					else if(board[i-1][j] instanceof HallSquare) {
+						((DoorSquare)board[i][j]).setHallSquare((HallSquare) board[i-1][j]);
+						((HallSquare) board[i-1][j]).setDoorNear(true);
+						continue;
+					}
+					// North
+					else if(board[i+1][j] instanceof HallSquare) {
+						((DoorSquare)board[i][j]).setHallSquare((HallSquare) board[i+1][j]);
+						((HallSquare) board[i+1][j]).setDoorNear(true);
+						continue;
+					}
+
+					throw new InvalidBoardException("[Invalid Board] There must be a hallway square adjacent to a door square!");
+				}
+			}
+		}
+		MyUtils.Log("[Board] "+doorCount+" Doors successfully created and connected to Hallways.");
+	}
+
+
+
 }

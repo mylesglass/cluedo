@@ -12,13 +12,13 @@ import cluedo.Position;
  * Properties of hallway squares are:
  * 		-Can have players on them.
  * 		-Each move of a player on a hall square uses one of their roll count (?)
- * 		- TODO: can a player share a hall square????
  * @author myles
  *
  */
 public class HallSquare implements Square {
 	private Position position;
 	private Color color;
+	private Boolean doorNear = false;
 
 	public HallSquare(Position position) {
 		this.position = position;
@@ -42,10 +42,33 @@ public class HallSquare implements Square {
 	}
 
 	/**
+	 * Set Boolean value representing if there is a door next to this square
+	 * @param boolean
+	 */
+	public void setDoorNear(Boolean b) {
+		this.doorNear = b;
+	}
+
+	/**
+	 * Check to see if there is a door near to this hall square
+	 */
+	public boolean doorNear() {
+		return this.doorNear;
+	}
+
+	/**
 	 * Print out char representing type of square. For testing purposes.
 	 */
 	public void print() {
 		System.out.print('H');
+	}
+
+	/**
+	 * Return string reference to this
+	 * @return string
+	 */
+	public String toString() {
+		return "HallSquare("+position.getX()+","+position.getY()+")";
 	}
 
 	/**
@@ -55,6 +78,7 @@ public class HallSquare implements Square {
 	 * @param y Offset cause by menu bar above
 	 */
 	public void draw(Graphics g, int squareSize, int yOffset) {
+		if(this.doorNear()) this.color = Color.GRAY;
 		g.setColor(this.color);
 		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
 		g.setColor(Color.GRAY);

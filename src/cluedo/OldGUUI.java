@@ -88,15 +88,6 @@ public class OldGUUI {
 			}
 		};
 
-		// TODO catch clicks outside of board.
-		drawing.addMouseListener(new MouseAdapter(){
-	        public void mouseReleased(MouseEvent e){
-	            MyUtils.Log("[GUI] User click on a "
-	            		+board.getSquareAt((int) (e.getX() / SQUARE_SIZE) + 3, (int) (e.getY() / SQUARE_SIZE) + 3).toString()
-	            		+" Square.");
-	        }
-		});
-
 		frame.add(drawing, BorderLayout.CENTER);
 
 		// Once all set up, make it visible

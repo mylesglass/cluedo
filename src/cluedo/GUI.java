@@ -9,7 +9,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -38,8 +40,10 @@ public class GUI {
 	private int playerPanelWidth;
 	private int playerPanelHeight;
 
-	private int width;
-	private int height;
+	// Checklist information
+	public ArrayList<String> roomNames;
+	public ArrayList<String> characterNames;
+	public ArrayList<String> weaponNames;
 
 	// GUI Components
 	private BoardPanel boardPanel;
@@ -88,24 +92,39 @@ public class GUI {
 		container.setSize(this.gameWidth, this.gameHeight + 25);
 		container.setLayout(null);
 
-		// Drawing Component
+		// Menu Bar
+		JPanel menuPanel = new JPanel();
+		JButton newGameButton = new JButton("New Game");
 
+		menuPanel.add(newGameButton);
+		container.add(menuPanel);
+		menuPanel.setBounds(0, 0, gameWidth, MENU_BAR_SIZE);
+
+		// Board Drawing Component
 		boardPanel = new BoardPanel(board);
 		boardPanel.setPreferredSize(new Dimension(this.boardWidth, this.boardHeight));
 
+		boardPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MyUtils.Log("[GUI][BOARD] Mouse clicked on a "+getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE).toString());
+			}
+		});
+
+		//CheckList Drawing Component
 		checkListPanel = new CheckListPanel(checkPanelWidth, checkPanelHeight);
 		checkListPanel.setPreferredSize(new Dimension(this.checkPanelWidth, this.checkPanelHeight));
+		checkListPanel.setBackground(Color.GRAY);
 
+		// Player Panel Component
 		playerPanel = new PlayerPanel(playerPanelWidth, playerPanelHeight);
 		checkListPanel.setPreferredSize(new Dimension(this.playerPanelWidth, this.playerPanelHeight));
 
-
+		// Add Panels to Frame
 		container.add(boardPanel);
 		boardPanel.setBounds(0, MENU_BAR_SIZE + 0, boardWidth, boardHeight);
-
 		container.add(checkListPanel);
 		checkListPanel.setBounds(boardWidth, MENU_BAR_SIZE + 0, PANEL_SIZE, boardHeight);
-
 		container.add(playerPanel);
 		playerPanel.setBounds(0, MENU_BAR_SIZE + boardHeight, gameWidth, PANEL_SIZE);
 
@@ -113,17 +132,52 @@ public class GUI {
 		container.setVisible(true);
 	}
 
-	public void drawBoard() {
+	public void updateCardNames(ArrayList<String> rooms, ArrayList<String> chars, ArrayList<String> weapons) {
+		this.characterNames = chars;
+		this.roomNames = rooms;
+		this.weaponNames = weapons;
+	}
+
+	private Square getSquareAt(int x, int y) {
+		return this.board.getSquareAt(x,y);
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void drawGame() {
+		drawBoard();
+		drawCheckList();
+		drawPlayerPanel();
+	}
+
+	private void drawBoard() {
+
 		boardPanel.repaint();
 	}
 
-	public void drawCheckList() {
+	private void drawCheckList() {
+		Graphics clg = checkListPanel.getGraphics();
+
+		clg.setColor(Color.GRAY);
+		clg.fillRect(boardWidth, 0, PANEL_SIZE, boardHeight);
+
+		clg.setColor(Color.WHITE);
+
+		int y = PANEL_SIZE/8;
+		for(String room : roomNames) {
+			clg.drawString(room, PANEL_SIZE/8, y);
+			y += PANEL_SIZE / 8;
+			//MyUtils.Log("[GUI] Drawing "+room+" to Checklist ("+PANEL_SIZE/8+","+y+")");
+		}
 		checkListPanel.repaint();
 	}
 
-	public void drawPlayerPanel() {
+	private void drawPlayerPanel() {
 		playerPanel.repaint();
 	}
+
 
 }
 
@@ -162,8 +216,7 @@ class CheckListPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.RED);
-		g.fillRect(0, 0, width, height);
+		//g.drawString, x, y);
 	}
 }
 
@@ -182,7 +235,10 @@ class PlayerPanel extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, width, height);
+		g.setColor(Color.LIGHT_GRAY);
+		g.drawString("Player Panel", 100, 100);
 	}
+
 }
 
 

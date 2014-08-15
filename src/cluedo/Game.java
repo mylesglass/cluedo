@@ -6,6 +6,7 @@ import java.util.Set;
 
 import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
+import cluedo.cards.RoomCard;
 
 /**
  * Game holds all of the logic of Cluedo.
@@ -17,24 +18,26 @@ import cluedo.cards.CharacterCard;
 public class Game {
 	private GUI gui;
 	private Board board;
-    private ArrayList<Player> players;
-    private ArrayList<Card> deck;
+	private ArrayList<Player> players;
+	private ArrayList<Card> deck;
+	private ArrayList<Room> rooms;
+
+	private ArrayList<String> roomNames;
+	private ArrayList<String> characterNames;
+	private ArrayList<String> weaponNames;
 
 	public Game() {
-		MyUtils.Log("===================");
-		MyUtils.Log("---    Cluedo    ---");
+		MyUtils.PrintLogo();
+
 		gui = new GUI(); // Construct GUI
 		MyUtils.Log("[Game] GUI Constructed.");
-
-		// Construct board from text file
-		BoardParser boardparse = new BoardParser();
-		board = boardparse.parseBoard(new File("src/board.txt"));
-		MyUtils.Log("[Game] Board Parsed and Constructed.");
+		gui.setState("MENU");
 
 		// construct a set of cards from text file
 		CardParser cardParser = new CardParser();
 		cardParser.parseCards(new File("src/cards.txt"));
 		this.deck = cardParser.getDeck();
+		gui.updateCardNames(cardParser.getRoomNames(), cardParser.getCharacterNames(), cardParser.getWeaponNames());
 		MyUtils.Log("[Game] Deck Parsed and Constructed.");
 
 		//construct players from cards.
@@ -42,18 +45,42 @@ public class Game {
 		for(Card c: deck){
 			if(c instanceof CharacterCard){
 				CharacterCard card = (CharacterCard)c ;
-                Player player = new Player(card);
-                players.add(player);
+				Player player = new Player(card);
+				players.add(player);
 				MyUtils.Log("[Game] constructing players from deck: " + c.getName());
 			}
 		}
+
+
+
+		// Construct Rooms from Cards, and assign roomSquares to them
+		rooms = new ArrayList<Room>();
+		for(Card c : deck) {
+			if(c instanceof RoomCard) {
+				rooms.add(new Room((RoomCard)c));
+				MyUtils.Log("[Game] Constructed Room " + c.getName() + "  from deck.");
+			}
+		}
+
+		// Construct board from text file
+		BoardParser boardparse = new BoardParser();
+		board = boardparse.parseBoard(new File("src/boards/newboard.txt"));
+		board.initBoard();
+		rooms = board.addSquaresToRooms(rooms);
+		MyUtils.Log("[Game] Board Parsed and Constructed.");
 
 		// Set up initial board.
 		gui.initialiseGameInterface(board);
 		MyUtils.Log("[Game] GUI dimensions set and board supplied.");
 
+		// Initialise Each Player
+		for(Player p : players) {
+			initialisePlayer(p);
+
+		}
+
 		// Start GUI on Menu
-		redraw();
+		gui.drawGame();
 	}
 
 	/**
@@ -65,15 +92,6 @@ public class Game {
 	}
 
 	/**
-	 * Redraw GUI
-	 */
-	private void redraw() {
-		gui.drawBoard();
-		gui.drawCheckList();
-		gui.drawPlayerPanel();
-	}
-
-	/**
 	 * Rolls one die and return an integer in the range of 1 to 6.
 	 * Displays rolling graphic in GUI.
 	 * @return random int
@@ -81,8 +99,13 @@ public class Game {
 	private int rollDice() {
 		int random = (int) (1 + Math.random() * 6);
 		MyUtils.Log("[Game] User has rolled a: "+random);
-	//	gui.roll(random);
+		//	gui.roll(random);
 		return random;
+	}
+
+	private void initialisePlayer(Player player) {
+		// Need to create players checklist before dealing cards
+		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
 	}
 
 	@SuppressWarnings("unused")

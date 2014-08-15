@@ -24,7 +24,6 @@ public class TunnelSquare implements Square {
 	 * Add the Tunnel Square that this square links to
 	 * @param TunnelSquare
 	 *
-	 * TODO: how to do errors? need to add exceptions
 	 */
 	public void addPair(TunnelSquare pair) {
 		if(this.pairSquare != null) {
@@ -56,6 +55,14 @@ public class TunnelSquare implements Square {
 	 */
 	public void print() {
 		System.out.print('T');
+	}
+
+	/**
+	 * Return string reference to this
+	 * @return string
+	 */
+	public String toString() {
+		return "SuperMagicalTunnelSquare("+position.getX()+","+position.getY()+")";
 	}
 
 

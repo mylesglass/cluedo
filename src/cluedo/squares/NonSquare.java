@@ -8,10 +8,6 @@ import cluedo.Position;
 
 /**
  * Represents a square that cannot be used.
- * TODO: is this needed? because there are oter squares
- * 			like roomsquare that are never actually stood on?
- * 			actually looking at a board it might be.
- *
  * @author myles
  *
  */
@@ -45,6 +41,14 @@ public class NonSquare implements Square {
 	 */
 	public void print() {
 		System.out.print('N');
+	}
+
+	/**
+	 * Return string reference to this
+	 * @return string
+	 */
+	public String toString() {
+		return "NonSquare("+position.getX()+","+position.getY()+")";
 	}
 
 	/**

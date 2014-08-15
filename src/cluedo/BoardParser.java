@@ -26,12 +26,7 @@ import cluedo.squares.*;
  */
 public class BoardParser {
 	private Board board;
-	/**
-	 * TODO When creating door squares, we must link them to a hallsquare and a room. The hallsquare linked should be the vertical
-	 * 		option if there is more than one possible hallsquare.
-	 * TODO Allow the board text file to supply the names for each room, most likely in order in which they will be read.
-	 * TODO Spawn Squares
-	 */
+
 	public BoardParser() {
 
 	}
@@ -39,7 +34,6 @@ public class BoardParser {
 
 	/**
 	 * Parses supplied txt file, and creates new game board from it.
-	 * TODO: Exceptions
 	 * @param board file to be read, properly formatted
 	 * @return Fresh new board, ready for playing
 	 */
@@ -63,7 +57,7 @@ public class BoardParser {
 
 				// For each character in line, decide type of square, construct it, and add it to board.
 				for(int j = 0; j < strLine.length(); j++) {
-					board.addSquare(parseCharacter(strLine.charAt(j), new Position(j,i)));
+					board.addSquare(parseCharacter(strLine.substring(j, j+1), new Position(j,i)));
 				}
 
 				i++;
@@ -84,13 +78,14 @@ public class BoardParser {
 	 * @param Position new square element is to be added to
 	 * @return New Square, with correct position.
 	 */
-	private Square parseCharacter(char type, Position position) {
-		if(type == 'H') return new HallSquare(position);
-		if(type == 'T') return new TunnelSquare(position);
-		if(type == 'R') return new RoomSquare(position);
-		if(type == 'N') return new NonSquare(position);
-		if(type == 'D') return new DoorSquare(position);
-		if(type == 'S') return new SpawnSquare(position);
-		return null;
+	private Square parseCharacter(String squareType, Position position) {
+		//MyUtils.Log(squareType);
+		if(squareType.equals("H")) return new HallSquare(position);
+		if(squareType.equals("T")) return new TunnelSquare(position);
+		if(squareType.equals("N")) return new NonSquare(position);
+		if(squareType.equals("D")) return new DoorSquare(position);
+		if(squareType.equals("S")) return new SpawnSquare(position);
+		return new RoomSquare(position, Integer.parseInt(squareType));
+
 	}
 }
