@@ -62,7 +62,6 @@ public class GUI {
 	private Board board;
 	private String state = "INIT";
 
-	private boolean newGame = false;
 	/**
 	 * Construct GUI Component for displaying any information needed for the user to play game
 	 */
@@ -75,7 +74,6 @@ public class GUI {
 	 * @param boardWidth
 	 * @param boardHeight
 	 */
-	@SuppressWarnings("serial")
 	public void initialiseGameInterface(Board board) {
 		this.board = board;
 
@@ -145,8 +143,7 @@ public class GUI {
 		newGameButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-
-				ArrayList<String> playersChoice = new ArrayList<String>();
+				// Construct empty list for storing character names
 				charactersInPlay = new ArrayList<String>();
 
 				String[] names = new String[characterNames.size()];
@@ -188,19 +185,23 @@ public class GUI {
 		});
 	}
 
+	/**
+	 * Get a list of the players who have been chosen by the users of the game
+	 */
 	public ArrayList<String> getPlayers() {
 		return this.charactersInPlay;
 	}
 
+	/**
+	 * Update the references to the names of the different cards in the game
+	 * @param list of room names
+	 * @param list of char names
+	 * @param list of weapon names
+	 */
 	public void updateCardNames(ArrayList<String> rooms, ArrayList<String> chars, ArrayList<String> weapons) {
 		this.characterNames = chars;
 		this.roomNames = rooms;
 		this.weaponNames = weapons;
-	}
-	// TODO comment everything in gui class
-
-	public boolean isNewGame() {
-		return this.newGame;
 	}
 
 	public String getState() {

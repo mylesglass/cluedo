@@ -111,7 +111,6 @@ public class Game {
 	}
 
 	private void initialisePlayers() {
-		MyUtils.Log("fuck you buddy");
 		// Initialise Each Player
 		for(String name : gui.getPlayers()) {
 			MyUtils.Log(name);
@@ -128,8 +127,6 @@ public class Game {
 		// Need to create players checklist before dealing cards
 		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
 		// deal cards
-
-		// Create Tokens
 
 		// Place on Spawn Points
 
