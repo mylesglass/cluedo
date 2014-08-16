@@ -119,6 +119,11 @@ public class Player {
 	public Position getPos(){
 		return this.position;
 	}
+	
+	public void initialiseHand(ArrayList<Card> card){
+	
+		this.hand = card;
+	}
 
 
 }

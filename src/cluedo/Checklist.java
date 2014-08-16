@@ -37,4 +37,10 @@ public class Checklist {
 			MyUtils.Log("[Checklist] "+str+", "+checklist.get(str));
 		}
 	}
+	
+	public HashMap checkList(){
+		
+		return checklist;
+		
+	}
 }

@@ -148,9 +148,11 @@ public class GUI {
 
         	public void actionPerformed(ActionEvent e) {
 
-                String[] options = new String[] {"1", "2","3","4","5","6"};
+                String[] options = new String[] {"2","3","4","5","6"};
                 int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
         		 numPlayers = name+1;
+
+
 
                 MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
 
@@ -186,6 +188,9 @@ public class GUI {
 
                 }
         	}});
+
+
+
 	}
 
 	public void updateCardNames(ArrayList<String> rooms, ArrayList<String> chars, ArrayList<String> weapons) {
