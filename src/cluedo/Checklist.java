@@ -8,6 +8,15 @@ import cluedo.cards.Card;
 public class Checklist {
   private HashMap<String, Boolean> checklist;
 
+  
+  /**
+   * @author Neal Hartley && Myles Glass
+   * @param room
+   * @param character
+   * @param weapon
+   * constructs a checklist of all cards in the game.
+   * sets all of them initially to false, or , unchecked.
+   */
 	public Checklist(ArrayList<String> room, ArrayList<String> character, ArrayList<String> weapon){
 		this.checklist = new HashMap<String, Boolean>();
 
@@ -21,8 +30,14 @@ public class Checklist {
 		for(String weaponName : weapon) checklist.put(weaponName, false);
 
 	}
-	//requires: a cluedo card.
-	//ensures: cards mapping becomes true and returns true, or if card is wrong returns false.
+	
+	
+	
+	/**
+	 * Given a single card, will check that card is contained in checklist and if so will check it off, map it to true.
+	 * @param card
+	 * @return bool
+	 */
 	public boolean checkOff(Card card){
 		//if checklist contains key then sets mapping too true, ie checks it off.
 		if(checklist.containsKey(card.getName())){
@@ -32,11 +47,15 @@ public class Checklist {
 		return false;
 	}
 
+	/**
+	 * prints out entire checklist.
+	 */
 	public void printChecklist() {
 		for(String str : checklist.keySet()) {
 			MyUtils.Log("[Checklist] "+str+", "+checklist.get(str));
 		}
 	}
+	
 	
 	public HashMap checkList(){
 		

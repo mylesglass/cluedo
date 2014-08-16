@@ -35,6 +35,12 @@ public class Game {
 	private ArrayList<String> characterNames;
 	private ArrayList<String> weaponNames;
 
+/**
+ * holds all of the main functionality for game initialisation and then play,
+ *  Parses cards using CardParser.
+ *  Uses card parses to construct a deck, and to construct all characters.
+ *  sets up game with selected players.
+ */
 	public Game() {
 		MyUtils.PrintLogo();
 
@@ -117,6 +123,25 @@ public class Game {
 		}
 		gui.drawPlayersToBoard(players);
 		dealCards();
+        i=0;
+		while(true){
+			gui.setCurrentPlayer(players.get(i));
+			int steps = rollDice();
+			int stepsLeft = steps;
+
+
+
+
+
+			if(i==players.size()-1){
+				i=0;
+			}
+			else{i++;}
+
+		}
+
+
+
 
 
 		gui.setCurrentPlayer(players.get(0));
@@ -144,6 +169,11 @@ public class Game {
 		return random;
 	}
 
+
+	/**
+	 * initialises all players based on the gui's list of players who are active i.e.
+	 * controlled in this game. whittles down the lsit of potential characters to actual players.
+	 */
 	private void initialisePlayers() {
 		// Initialise Each Player
 		for(String name : gui.getPlayers()) {
@@ -157,6 +187,10 @@ public class Game {
 		}
 	}
 
+	/**
+	 * initialises a a single player. sets up their checklist.
+	 * @param player
+	 */
 	private void initialisePlayer(Player player) {
 		// Need to create players checklist before dealing cards
 		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
@@ -172,7 +206,9 @@ public class Game {
 		Game game = new Game();
 	}
 
-
+/**
+ * deals cards to all players. also sets up the winningCombo, or the 3 cards that reveal the murder.
+ */
 	private void dealCards(){
 
 		Collections.shuffle(deck);
@@ -191,7 +227,8 @@ public class Game {
 		deck.remove(room);
 
 		winningCombo = new Accusation(charac, room, weap);
-	int i= 0;
+	int c = 0;
+    int i= 0;
 	int j=0;
 		while(!deck.isEmpty()){
 			MyUtils.Log("[Game] player: "+ players.get(i).getName() );
@@ -199,14 +236,14 @@ public class Game {
 			players.get(i).addCard(deck.get(j));
 			deck.remove(j);
 
-
+            c++;
 			if(i == players.size()-1){
 				i=0;
 			}
 			else{i++;}
 		}
 		MyUtils.Log("[Game] i: "+i+" j: " + j );
-
+		MyUtils.Log("[Game] number of cards printed: "+c );
 	}
 
 
