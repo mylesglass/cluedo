@@ -95,7 +95,8 @@ public class GUI {
 
 		// Set Frame
 		container = new JFrame("Guess Who");
-		container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		container.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		container.addWindowListener(new RadioListener());
 		container.setSize(this.gameWidth, this.gameHeight + 25);
 		container.setLayout(null);
 
