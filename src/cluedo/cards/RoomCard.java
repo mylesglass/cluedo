@@ -1,5 +1,8 @@
 package cluedo.cards;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  * Room Card
  * xxx
@@ -31,4 +34,14 @@ public class RoomCard implements Card {
 	//public Room getRoom() {
 	//	return room;
 	//}
+
+	/**
+	 * Draws card on Player Panel graphics component
+	 */
+	public void draw(Graphics g, int x, int y, int width, int height) {
+		g.setColor(Color.WHITE);
+		g.fillRect(x, y, width, height);
+		g.setColor(Color.BLACK);
+		g.drawString(this.name, x + 20, y + 20);
+	}
 }

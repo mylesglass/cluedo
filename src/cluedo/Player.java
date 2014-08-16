@@ -50,6 +50,13 @@ public class Player {
 	}
 
 	/**
+	 * Get Current Hand
+	 */
+	public ArrayList<Card> getHand() {
+		return this.hand;
+	}
+
+	/**
 	 * Add a new CheckList to the players inventory
 	 */
 	public void addChecklist(Checklist cl) {
@@ -120,9 +127,9 @@ public class Player {
 	public Position getPos(){
 		return this.position;
 	}
-	
+
 	public void initialiseHand(ArrayList<Card> card){
-	
+
 		this.hand = card;
 	}
 

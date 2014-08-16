@@ -19,12 +19,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import cluedo.cards.Card;
 import cluedo.squares.Square;
 
 /**
  * Responsible for displaying any information that the user needs to play the game.
- * @author myles
- *
+ * @author myles & neal
+ *	TODO allow drawing the deck to player panel
+ *	TODO draw dice roll to player panel
+ *	TODO accusation button on player panel
  */
 public class GUI {
 	private final int SQUARE_SIZE = 20;
@@ -204,13 +207,25 @@ public class GUI {
 		this.weaponNames = weapons;
 	}
 
+	/**
+	 * Get the current state of the gui
+	 * @return state string
+	 */
 	public String getState() {
 		return state;
 	}
 
+	/**
+	 * Draw supplied list of players to board.
+	 * @param players
+	 */
 	public void drawPlayersToBoard(ArrayList<Player> players) {
 		boardPanel.setPlayers(players);
 		boardPanel.repaint();
+	}
+
+	public void setCurrentPlayer(Player p) {
+
 	}
 
 	private Square getSquareAt(int x, int y) {
@@ -232,19 +247,6 @@ public class GUI {
 	}
 
 	private void drawCheckList() {
-		Graphics clg = checkListPanel.getGraphics();
-
-		clg.setColor(Color.GRAY);
-		clg.fillRect(boardWidth, 0, PANEL_SIZE, boardHeight);
-
-		clg.setColor(Color.WHITE);
-
-		int y = PANEL_SIZE/8;
-		for(String room : roomNames) {
-			clg.drawString(room, PANEL_SIZE/8, y);
-			y += PANEL_SIZE / 8;
-			//MyUtils.Log("[GUI] Drawing "+room+" to Checklist ("+PANEL_SIZE/8+","+y+")");
-		}
 		checkListPanel.repaint();
 	}
 
@@ -252,7 +254,9 @@ public class GUI {
 		playerPanel.repaint();
 	}
 
+	private void initialiseCheckPanel() {
 
+	}
 }
 
 class BoardPanel extends JPanel {
@@ -296,22 +300,75 @@ class CheckListPanel extends JPanel {
 	private int width;
 	private int height;
 
+	private final int OFFSET = 30;
+	private final int SPACING = 10;
+
+	private ArrayList<String> rooms;
+	private ArrayList<String> characters;
+	private ArrayList<String> weapons;
+
 	public CheckListPanel(int width, int height) {
 		this.width = width;
 		this.height = height;
 		MyUtils.Log("[CheckListPanel] Check List Panel Created. Size: "+width+", "+height);
 	}
 
+	public void initCheckPanel(ArrayList<String> rooms, ArrayList<String> characters, ArrayList<String> weapons) {
+		this.rooms = rooms;
+		this.characters = characters;
+		this.weapons = weapons;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//g.drawString, x, y);
+		drawList(g);
+	}
+
+	private void drawList(Graphics g) {
+		int lineCount = 1;
+
+		g.setColor(Color.BLACK);
+
+		// Draw each of the room names
+		g.drawString("ROOMS", OFFSET, OFFSET + (SPACING * lineCount));
+		lineCount++;
+		for(String room : rooms) {
+			g.drawString("    "+room, OFFSET, OFFSET + (SPACING * lineCount));
+			lineCount++;
+		}
+
+		// Draw each of the character names
+		lineCount++;
+		g.drawString("CHARACTERS", OFFSET, OFFSET + (SPACING * lineCount));
+		lineCount++;
+		for(String character : characters) {
+			g.drawString("    "+character, OFFSET, OFFSET + (SPACING * lineCount));
+			lineCount++;
+		}
+
+		// Draw each of the weapon names
+		lineCount++;
+		g.drawString("WEAPONS", OFFSET, OFFSET + (SPACING * lineCount));
+		lineCount++;
+		for(String weapon : weapons) {
+			g.drawString("    "+weapon, OFFSET, OFFSET + (SPACING * lineCount));
+			lineCount++;
+		}
 	}
 }
 
 class PlayerPanel extends JPanel {
 	private int width;
 	private int height;
+	private Player currentPlayer;
+	private boolean hasPlayer = false;
+	private final int CARD_X_POS = 100;
+	private final int CARD_Y_POS = 50;
+	private final int CARD_WIDTH = 100;
+	private final int CARD_HEIGHT = 200;
+	private final int CARD_SPACING = 20;
+
 
 	public PlayerPanel(int width, int height) {
 		this.width = width;
@@ -326,6 +383,23 @@ class PlayerPanel extends JPanel {
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.LIGHT_GRAY);
 		g.drawString("Player Panel", 100, 100);
+		if(hasPlayer) {
+			drawPlayerCards(g);
+		}
+	}
+
+	private void drawPlayerCards(Graphics g) {
+		ArrayList<Card> cards = currentPlayer.getHand();
+		int count = 1;
+		for(Card c : cards) {
+			c.draw(g, (CARD_X_POS * count) + (CARD_SPACING * (count - 1)), CARD_HEIGHT, CARD_WIDTH, CARD_HEIGHT);
+			count++;
+		}
+	}
+
+	public void setCurrentPlayer(Player p) {
+		this.currentPlayer = p;
+		this.hasPlayer = true;
 	}
 
 }
