@@ -64,6 +64,8 @@ public class GUI {
 
 	private Board board;
 	private String state = "INIT";
+	private Boolean ready = false;
+
 
 	/**
 	 * Construct GUI Component for displaying any information needed for the user to play game
@@ -153,11 +155,11 @@ public class GUI {
 				for(int i=0; i<names.length; i++){
 					names[i]=characterNames.get(i);
 				}
-                String[] options = new String[] {"2","3","4","5","6"};
-                int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
-        		 numPlayers = name+1;
+				String[] options = new String[] {"2","3","4","5","6"};
+				int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
+				numPlayers = name+2;
 
-                MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
+				MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
 
 				for(int i = 0; i<numPlayers; i++){
 
@@ -183,6 +185,7 @@ public class GUI {
 				}
 
 				state = "GAME";
+				ready = true;
 			}
 
 		});
@@ -232,6 +235,10 @@ public class GUI {
 		return this.board.getSquareAt(x,y);
 	}
 
+	public void setReady(Boolean b){
+		this.ready = b;
+	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
@@ -252,6 +259,10 @@ public class GUI {
 
 	private void drawPlayerPanel() {
 		playerPanel.repaint();
+	}
+
+	public Boolean isReady(){
+		return this.ready;
 	}
 
 	private void initialiseCheckPanel() {
@@ -401,6 +412,8 @@ class PlayerPanel extends JPanel {
 		this.currentPlayer = p;
 		this.hasPlayer = true;
 	}
+
+
 
 }
 
