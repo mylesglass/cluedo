@@ -56,6 +56,9 @@ public class GUI {
 	private int numPlayers;
 	private ArrayList<String> charactersInPlay;
 
+	// The player whose turn it is currently
+	private Player currentPlayer;
+
 	// GUI Components
 	private BoardPanel boardPanel;
 	private CheckListPanel checkListPanel;
@@ -228,7 +231,8 @@ public class GUI {
 	}
 
 	public void setCurrentPlayer(Player p) {
-
+		this.currentPlayer = p;
+		playerPanel.setCurrentPlayer(p);
 	}
 
 	private Square getSquareAt(int x, int y) {
@@ -265,8 +269,8 @@ public class GUI {
 		return this.ready;
 	}
 
-	private void initialiseCheckPanel() {
-
+	public void initialiseCheckPanel() {
+		this.checkListPanel.initCheckPanel(this.roomNames, this.characterNames, this.weaponNames);
 	}
 }
 
@@ -312,7 +316,7 @@ class CheckListPanel extends JPanel {
 	private int height;
 
 	private final int OFFSET = 30;
-	private final int SPACING = 10;
+	private final int SPACING = 15;
 
 	private ArrayList<String> rooms;
 	private ArrayList<String> characters;
@@ -340,6 +344,7 @@ class CheckListPanel extends JPanel {
 	}
 
 	private void drawList(Graphics g) {
+		MyUtils.Log("[GUI] Drawing Check List");
 		int lineCount = 1;
 
 		g.setColor(Color.BLACK);
@@ -377,11 +382,11 @@ class PlayerPanel extends JPanel {
 	private int height;
 	private Player currentPlayer;
 	private boolean hasPlayer = false;
-	private final int CARD_X_POS = 100;
+	private final int CARD_X_POS = 80;
 	private final int CARD_Y_POS = 50;
-	private final int CARD_WIDTH = 100;
+	private final int CARD_WIDTH = 132;
 	private final int CARD_HEIGHT = 200;
-	private final int CARD_SPACING = 20;
+	private final int CARD_SPACING = 10;
 
 
 	public PlayerPanel(int width, int height) {
@@ -406,7 +411,7 @@ class PlayerPanel extends JPanel {
 		ArrayList<Card> cards = currentPlayer.getHand();
 		int count = 1;
 		for(Card c : cards) {
-			c.draw(g, (CARD_X_POS * count) + (CARD_SPACING * (count - 1)), CARD_HEIGHT, CARD_WIDTH, CARD_HEIGHT);
+			c.draw(g, (CARD_X_POS * count) - (CARD_SPACING * (count - 1)), CARD_Y_POS, CARD_WIDTH, CARD_HEIGHT);
 			count++;
 		}
 	}

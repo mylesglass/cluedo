@@ -23,9 +23,9 @@ Miss Scarlett
 #F73212
 WEAPONS
 Candlestick
-Dagger
+Knife
 Lead pipe
 Revolver
 Rope
-Spanner
+Wrench
 X

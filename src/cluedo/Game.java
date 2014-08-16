@@ -94,7 +94,7 @@ public class Game {
 		// Start GUI on Menu
 		gui.drawGame();
 
-		gui.drawPlayersToBoard(characters);
+
 
 		//FIXME only works if printing infinite loop??
 		while(true){
@@ -115,9 +115,12 @@ public class Game {
 		for(Player p: players){
 			initialisePlayer(p);
 		}
-
+		gui.drawPlayersToBoard(players);
 		dealCards();
 
+
+		gui.setCurrentPlayer(players.get(0));
+		gui.drawGame();
 	}
 
 
@@ -158,10 +161,10 @@ public class Game {
 		// Need to create players checklist before dealing cards
 		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
 		// deal cards
+		this.gui.initialiseCheckPanel();
 
 
-
-
+		gui.drawGame();
 	}
 
 	@SuppressWarnings("unused")

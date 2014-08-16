@@ -42,21 +42,29 @@ public class CardParser {
 			String strLine = scanner.nextLine();
 
 
-
+			int i = 1;
 			if(strLine.equals("ROOMS")){
 				strLine=scanner.nextLine();
 				while(!strLine.equals("CHARACTERS")){
 					MyUtils.Log("[CardParser] adding room: " + strLine);
-					cards.add(new RoomCard(strLine));
+					RoomCard rc = new RoomCard(strLine);
+					rc.addImage("src/images/room-"+i+".png");
+					i++;
+					cards.add(rc);
 					roomNames.add(strLine);
 					strLine=scanner.nextLine();
 				}
 			}
+
+			i = 1;
 			if(strLine.equals("CHARACTERS")){
 				strLine=scanner.nextLine();
 				while(!strLine.equals("WEAPONS")){
 					MyUtils.Log("[CardParser] adding character: " + strLine);
-					cards.add(new CharacterCard(strLine));
+					CharacterCard cc = new CharacterCard(strLine);
+					cc.addImage("src/images/char-"+i+".png");
+					i++;
+					cards.add(cc);
 					characterNames.add(strLine);
 					strLine=scanner.nextLine();
 					if(strLine.charAt(0) == '#') {
@@ -67,11 +75,16 @@ public class CardParser {
 				}
 
 			}
+
+			i = 1;
 			if(strLine.equals("WEAPONS")){
 				strLine=scanner.nextLine();
 				while(!strLine.equals("X")){
 					MyUtils.Log("[CardParser] adding weapon: " + strLine);
-					cards.add(new WeaponCard(strLine));
+					WeaponCard wc = new WeaponCard(strLine);
+					wc.addImage("src/images/weapon-"+i+".png");
+					i++;
+					cards.add(wc);
 					weaponNames.add(strLine);
 					strLine=scanner.nextLine();
 				}
