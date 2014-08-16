@@ -14,6 +14,7 @@ public class Board {
 	private int width;
 	private int height;
 	private Square[][] board;
+	private ArrayList<SpawnSquare> spawns;
 
 	/**
 	 * Construct board object, defined by width and height in squares
@@ -25,6 +26,7 @@ public class Board {
 		this.width = width;
 		this.height = height;
 		this.board = new Square[width][height];
+		this.spawns = new ArrayList<SpawnSquare>();
 	}
 
 	/**
@@ -54,6 +56,9 @@ public class Board {
 	public void addSquare(Square square){
 		Position sqpos = square.getPosition();
 		board[sqpos.getX()][sqpos.getY()] = square;
+		if(square instanceof SpawnSquare) {
+			spawns.add((SpawnSquare) square);
+		}
 	}
 
 	/**
@@ -65,6 +70,18 @@ public class Board {
 	public Square getSquareAt(int x, int y) {
 		return board[x][y];
 	}
+
+	/**
+	 * Initialize Each Spawn Square with a player.
+	 * The order is defined by the order in which they are parsed in card parser
+	 */
+	public void initialiseSpawns(ArrayList<Player> players) {
+		for(int i = 0; i < players.size(); i++) {
+			players.get(i).setPos(spawns.get(i).getPosition());
+			MyUtils.Log("[Board] Spawning "+players.get(i).getName() +" at position "+spawns.get(i).getPosition().toString());
+		}
+	}
+
 
 	/**
 	 * Get width of board
@@ -95,6 +112,7 @@ public class Board {
 			}
 		}
 	}
+
 
 	public ArrayList<Room> addSquaresToRooms(ArrayList<Room> rooms) {
 		for(int h = 0; h < this.height; h++) {

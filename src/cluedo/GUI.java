@@ -30,6 +30,7 @@ public class GUI {
 	private final int SQUARE_SIZE = 20;
 	private final int PANEL_SIZE = 300;
 	private final int MENU_BAR_SIZE = 60;
+	private final int TOKEN_SIZE = SQUARE_SIZE;
 
 	private int gameWidth;
 	private int gameHeight;
@@ -48,12 +49,9 @@ public class GUI {
 	public ArrayList<String> characterNames;
 	public ArrayList<String> weaponNames;
 
-
-
-
 	//number of players, storing here temporarily. && Characters in order of player.
 	private int numPlayers;
-	private ArrayList<String> CharactersInPlay;
+	private ArrayList<String> charactersInPlay;
 
 	// GUI Components
 	private BoardPanel boardPanel;
@@ -62,10 +60,9 @@ public class GUI {
 	private JFrame container;
 
 	private Board board;
-	private String state = "GAME";
+	private String state = "INIT";
 
-	private Font diceFont = new Font("Dialog", Font.PLAIN, 36);
-
+	private boolean newGame = false;
 	/**
 	 * Construct GUI Component for displaying any information needed for the user to play game
 	 */
@@ -105,7 +102,7 @@ public class GUI {
 		// Menu Bar
 		JPanel menuPanel = new JPanel();
 		JButton newGameButton = new JButton("New Game");
-        menuPanel.add(newGameButton);
+		menuPanel.add(newGameButton);
 		container.add(menuPanel);
 		menuPanel.setBounds(0, 0, gameWidth, MENU_BAR_SIZE);
 
@@ -146,52 +143,74 @@ public class GUI {
 		//NewGame button press events
 		newGameButton.addActionListener(new ActionListener(){
 
-        	public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
-                String[] options = new String[] {"1", "2","3","4","5","6"};
-                int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
-        		 numPlayers = name+1;
+				String[] options = new String[] {"1", "2","3","4","5","6"};
+				int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
+				numPlayers = name+1;
 
-                MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
+				MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
 
-                ArrayList<String> playersChoice = new ArrayList<String>();
-                CharactersInPlay = new ArrayList<String>();
+				ArrayList<String> playersChoice = new ArrayList<String>();
+				charactersInPlay = new ArrayList<String>();
 
-               String[] names = new String[characterNames.size()];
-               for(int i=0; i<names.length; i++){
-            	   names[i]=characterNames.get(i);
-               }
+				String[] names = new String[characterNames.size()];
+				for(int i=0; i<names.length; i++){
+					names[i]=characterNames.get(i);
+				}
 
 
-                for(int i = 0; i<numPlayers; i++){
+				for(int i = 0; i<numPlayers; i++){
 
-                	Object selection = JOptionPane.showInputDialog(container, "choose your player",
-                	        "Player selection", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
-                	 MyUtils.Log("[GUI] player selected: " + selection);
+					Object selection = JOptionPane.showInputDialog(container, "choose your player",
+							"Player selection", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
+					MyUtils.Log("[GUI] player selected: " + selection);
 
-                	 if(selection == null){
-                		 MyUtils.End("Player failed to pick a character.");
-                               }
+					if(selection == null){
+						MyUtils.End("Player failed to pick a character.");
+					}
 
-                	 CharactersInPlay.add((String) selection);
+					charactersInPlay.add((String) selection);
 
-                	 for(int j= 0 ; j < names.length ; j++){
+					for(int j= 0 ; j < names.length ; j++){
 
-             			 if(selection.equals(names[j]) ){
-             				 MyUtils.Log(names[j]);
-             				 names[j]=null;
-                		 }
+						if(selection.equals(names[j]) ){
+							MyUtils.Log(names[j]);
+							names[j]=null;
+						}
 
-                	 }
+					}
 
-                }
-        	}});
+				}
+
+				state = "GAME";
+			}
+
+		});
+	}
+
+	public ArrayList<String> getPlayers() {
+		return this.charactersInPlay;
 	}
 
 	public void updateCardNames(ArrayList<String> rooms, ArrayList<String> chars, ArrayList<String> weapons) {
 		this.characterNames = chars;
 		this.roomNames = rooms;
 		this.weaponNames = weapons;
+	}
+	// TODO comment everything in gui class
+
+	public boolean isNewGame() {
+		return this.newGame;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void drawPlayersToBoard(ArrayList<Player> players) {
+		boardPanel.setPlayers(players);
+		boardPanel.repaint();
 	}
 
 	private Square getSquareAt(int x, int y) {
@@ -209,7 +228,6 @@ public class GUI {
 	}
 
 	private void drawBoard() {
-
 		boardPanel.repaint();
 	}
 
@@ -242,6 +260,8 @@ class BoardPanel extends JPanel {
 	private int width;
 	private int height;
 	private Board board;
+	private ArrayList<Player> players;
+	private boolean hasPlayers = false;
 
 	public BoardPanel(Board board) {
 		this.board = board;
@@ -250,12 +270,25 @@ class BoardPanel extends JPanel {
 		MyUtils.Log("[BoardPanel] Board Panel Created. Size: "+this.width+", "+this.height);
 	}
 
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+		this.hasPlayers = true;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, width, height);
 		board.draw(g, SQUARE_SIZE, 0);
+		if(hasPlayers) drawPlayers(g);
+	}
+
+	private void drawPlayers(Graphics g) {
+		for(Player p : players) {
+			p.draw(g, SQUARE_SIZE);
+			MyUtils.Log("[BoardPanel] Drawing player "+p.getName());
+		}
 	}
 }
 

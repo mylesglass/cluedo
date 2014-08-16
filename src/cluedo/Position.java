@@ -8,7 +8,7 @@ package cluedo;
 public class Position {
 	private int x;
 	private int y;
-	
+
 	/**
 	 * Construct position
 	 * @param x coordinate
@@ -18,7 +18,7 @@ public class Position {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * Get x coordinate of position
 	 * @return x
@@ -26,12 +26,19 @@ public class Position {
 	public int getX() {
 		return this.x;
 	}
-	
+
 	/**
 	 * Get y coordinate of position
 	 * @return y
 	 */
 	public int getY() {
 		return this.y;
+	}
+
+	/**
+	 * Print Position
+	 */
+	public String toString() {
+		return "("+x+","+y+")";
 	}
 }

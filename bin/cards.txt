@@ -9,18 +9,18 @@ Hall
 Lounge
 Dining Room
 CHARACTERS
-Miss Scarlett
-#F73212
-Colonel Mustard
-#F8D700
 Mrs White
 #FFFFFF
 Reverend Green
 #1AAB1E
 Mrs Peacock
 #2470A4
+Colonel Mustard
+#F8D700
 Professor Plum
 #581742
+Miss Scarlett
+#F73212
 WEAPONS
 Candlestick
 Dagger

@@ -1,6 +1,7 @@
 package cluedo;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,5 +121,12 @@ public class Player {
 		return this.position;
 	}
 
+	/**
+	 * Draws the player token on it s current square, to the supplied graphics object
+	 */
+	public void draw(Graphics g, int size) {
+		g.setColor(this.color);
+		g.fillOval(position.getX() * size, position.getY() * size, size, size);
+	}
 
 }

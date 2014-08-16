@@ -19,7 +19,7 @@ import cluedo.cards.RoomCard;
 public class Game {
 	private GUI gui;
 	private Board board;
-	private Boolean isReady = false;  //???
+	private ArrayList<Player> characters;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deck;
 	private ArrayList<Room> rooms;
@@ -43,12 +43,12 @@ public class Game {
 		MyUtils.Log("[Game] Deck Parsed and Constructed.");
 
 		//construct players from cards.
-		players = new ArrayList<Player>();
+		characters = new ArrayList<Player>();
 		for(Card c: deck){
 			if(c instanceof CharacterCard){
 				CharacterCard card = (CharacterCard)c ;
 				Player player = new Player(card);
-				players.add(player);
+				characters.add(player);
 				MyUtils.Log("[Game] constructing players from deck: " + c.getName());
 
 			}
@@ -56,8 +56,8 @@ public class Game {
 		// Add colors to each player
 		int i = 0;
 		for(String str : cardParser.getCharacterColors()) {
-			players.get(i).setColor(str);
-			MyUtils.Log("[Game] "+players.get(i).getName()+" is color "+str);
+			characters.get(i).setColor(str);
+			MyUtils.Log("[Game] "+characters.get(i).getName()+" is color "+str);
 			i++;
 		}
 
@@ -75,19 +75,19 @@ public class Game {
 		board = boardparse.parseBoard(new File("src/boards/newboard.txt"));
 		board.initBoard();
 		rooms = board.addSquaresToRooms(rooms);
+		board.initialiseSpawns(characters);
 		MyUtils.Log("[Game] Board Parsed and Constructed.");
 
 		// Set up initial board.
 		gui.initialiseGameInterface(board);
 		MyUtils.Log("[Game] GUI dimensions set and board supplied.");
 
-		// Initialise Each Player
-		for(Player p : players) {
-			initialisePlayer(p);
-		}
+
 
 		// Start GUI on Menu
 		gui.drawGame();
+
+		gui.drawPlayersToBoard(characters);
 	}
 
 	/**
@@ -110,6 +110,19 @@ public class Game {
 		return random;
 	}
 
+	private void initialisePlayers() {
+		MyUtils.Log("fuck you buddy");
+		// Initialise Each Player
+		for(String name : gui.getPlayers()) {
+			MyUtils.Log(name);
+			for(Player p : characters) {
+				if(p.getName().equals(name)) {
+					players.add(p);
+					MyUtils.Log("[Game] "+p.getName()+" is ready for detective work");
+				}
+			}
+		}
+	}
 
 	private void initialisePlayer(Player player) {
 		// Need to create players checklist before dealing cards
