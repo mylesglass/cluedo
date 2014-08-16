@@ -318,6 +318,8 @@ class CheckListPanel extends JPanel {
 	private ArrayList<String> characters;
 	private ArrayList<String> weapons;
 
+	private boolean hasInit = false;
+
 	public CheckListPanel(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -328,12 +330,13 @@ class CheckListPanel extends JPanel {
 		this.rooms = rooms;
 		this.characters = characters;
 		this.weapons = weapons;
+		hasInit = true;
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawList(g);
+		if(hasInit) drawList(g);
 	}
 
 	private void drawList(Graphics g) {
