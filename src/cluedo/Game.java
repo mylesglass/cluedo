@@ -3,11 +3,15 @@ package cluedo;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
+import cluedo.cards.Accusation;
 import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
 import cluedo.cards.RoomCard;
+import cluedo.cards.WeaponCard;
 
 /**
  * Game holds all of the logic of Cluedo.
@@ -23,6 +27,9 @@ public class Game {
 	private ArrayList<Player> players;
 	private ArrayList<Card> deck;
 	private ArrayList<Room> rooms;
+	private Accusation winningCombo;
+
+
 
 	private ArrayList<String> roomNames;
 	private ArrayList<String> characterNames;
@@ -88,7 +95,31 @@ public class Game {
 		gui.drawGame();
 
 		gui.drawPlayersToBoard(characters);
+
+		//FIXME only works if printing infinite loop??
+		while(true){
+			MyUtils.Log("[Game] ." + gui.isReady());
+			if(gui.isReady()){
+				break;
+			}
+
+
+		}
+
+		MyUtils.Log("[Game] made it passed isReady!.");
+
+		players = new ArrayList();
+
+		initialisePlayers();
+
+		for(Player p: players){
+			initialisePlayer(p);
+		}
+
+		dealCards();
+
 	}
+
 
 	/**
 	 * Get board
@@ -128,13 +159,53 @@ public class Game {
 		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
 		// deal cards
 
-		// Place on Spawn Points
 
-		// Draw on board
+
+
 	}
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Game game = new Game();
 	}
+
+
+	private void dealCards(){
+
+		Collections.shuffle(deck);
+		CharacterCard charac = null;
+		RoomCard room = null;
+		WeaponCard weap = null;
+
+
+		for(Card c: deck){
+			if(c instanceof CharacterCard){ charac= (CharacterCard) c;}
+			if(c instanceof WeaponCard){ weap= (WeaponCard) c;}
+			if(c instanceof RoomCard){ room = (RoomCard) c;}
+		}
+		deck.remove(charac);
+		deck.remove(weap);
+		deck.remove(room);
+
+		winningCombo = new Accusation(charac, room, weap);
+	int i= 0;
+	int j=0;
+		while(!deck.isEmpty()){
+			MyUtils.Log("[Game] player: "+ players.get(i).getName() );
+			MyUtils.Log("[Game]  got card: "+ deck.get(j).getName());
+			players.get(i).addCard(deck.get(j));
+			deck.remove(j);
+
+
+			if(i == players.size()-1){
+				i=0;
+			}
+			else{i++;}
+		}
+		MyUtils.Log("[Game] i: "+i+" j: " + j );
+
+	}
+
+
+
 }
