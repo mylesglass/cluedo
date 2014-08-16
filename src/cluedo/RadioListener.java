@@ -12,6 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+/**
+ *
+ * @author Neal Hartley && Myles Glass
+ * used for setting up radiobuttons prompt on attempted exit of board.
+ * implements windowListener.
+ *
+ */
 public class RadioListener implements WindowListener{
 
 
@@ -22,6 +29,11 @@ public class RadioListener implements WindowListener{
 
 	}
 
+
+	/**
+	 * opens up a JOptionPane with a panel containing radio button, on attempted close.
+	 *
+	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
 
