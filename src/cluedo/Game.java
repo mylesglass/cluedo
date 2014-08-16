@@ -1,5 +1,6 @@
 package cluedo;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
@@ -49,10 +50,16 @@ public class Game {
 				Player player = new Player(card);
 				players.add(player);
 				MyUtils.Log("[Game] constructing players from deck: " + c.getName());
+
 			}
 		}
-
-
+		// Add colors to each player
+		int i = 0;
+		for(String str : cardParser.getCharacterColors()) {
+			players.get(i).setColor(str);
+			MyUtils.Log("[Game] "+players.get(i).getName()+" is color "+str);
+			i++;
+		}
 
 		// Construct Rooms from Cards, and assign roomSquares to them
 		rooms = new ArrayList<Room>();
@@ -77,7 +84,6 @@ public class Game {
 		// Initialise Each Player
 		for(Player p : players) {
 			initialisePlayer(p);
-
 		}
 
 		// Start GUI on Menu
@@ -108,6 +114,13 @@ public class Game {
 	private void initialisePlayer(Player player) {
 		// Need to create players checklist before dealing cards
 		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
+		// deal cards
+
+		// Create Tokens
+		
+		// Place on Spawn Points
+
+		// Draw on board
 	}
 
 	@SuppressWarnings("unused")

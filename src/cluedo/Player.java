@@ -1,5 +1,6 @@
 package cluedo;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class Player {
     private ArrayList<Card> hand;
     private Checklist checklist;
     private Position position;
+    private Color color;
+
      /**
       * creates a player with all the necessary equipment for playing
       * the game.
@@ -22,6 +25,27 @@ public class Player {
 	public Player(CharacterCard card){
 		this.name = card.getName();
 		hand = new ArrayList<Card>();
+	}
+
+	/**
+	 * set color values of this player.
+	 */
+	public void setColor(Color c) {
+		this.color = c;
+	}
+
+	/**
+	 * set color values of this player.
+	 */
+	public void setColor(String str) {
+		this.color = Color.decode(str);
+	}
+
+	/**
+	 * Get the color of this player
+	 */
+	public Color getColor() {
+		return this.color;
 	}
 
 	/**

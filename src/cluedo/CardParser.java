@@ -23,6 +23,7 @@ public class CardParser {
 	private ArrayList<Card> cards;
 	private ArrayList<String> roomNames;
 	private ArrayList<String> characterNames;
+	private ArrayList<String> charColor;
 	private ArrayList<String> weaponNames;
 
 
@@ -30,6 +31,7 @@ public class CardParser {
 		cards = new ArrayList<Card>();
 		roomNames = new ArrayList<String>();
 		characterNames = new ArrayList<String>();
+		charColor = new ArrayList<String>();
 		weaponNames = new ArrayList<String>();
 
 	}
@@ -57,6 +59,11 @@ public class CardParser {
 					cards.add(new CharacterCard(strLine));
 					characterNames.add(strLine);
 					strLine=scanner.nextLine();
+					if(strLine.charAt(0) == '#') {
+						charColor.add(strLine);
+						strLine = scanner.nextLine();
+					}
+
 				}
 
 			}
@@ -98,6 +105,14 @@ public class CardParser {
 	 */
 	public ArrayList<String> getCharacterNames() {
 		return this.characterNames;
+	}
+
+	/**
+	 * Get a list of all character colors
+	 * @return ArrayList<String>
+	 */
+	public ArrayList<String> getCharacterColors() {
+		return this.charColor;
 	}
 
 	/**
