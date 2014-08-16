@@ -120,6 +120,11 @@ public class Player {
 	public Position getPos(){
 		return this.position;
 	}
+	
+	public void initialiseHand(ArrayList<Card> card){
+	
+		this.hand = card;
+	}
 
 	/**
 	 * Draws the player token on it s current square, to the supplied graphics object
