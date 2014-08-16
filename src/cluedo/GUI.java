@@ -48,8 +48,12 @@ public class GUI {
 	public ArrayList<String> characterNames;
 	public ArrayList<String> weaponNames;
 
-	//number of players, storing here temporarily.
+
+
+
+	//number of players, storing here temporarily. && Characters in order of player.
 	private int numPlayers;
+	private ArrayList<String> CharactersInPlay;
 
 	// GUI Components
 	private BoardPanel boardPanel;
@@ -113,6 +117,8 @@ public class GUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				MyUtils.Log("[GUI][BOARD] Mouse clicked on a "+getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE).toString());
+
+
 			}
 		});
 
@@ -147,6 +153,38 @@ public class GUI {
         		 numPlayers = name+1;
 
                 MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
+
+                ArrayList<String> playersChoice = new ArrayList<String>();
+                CharactersInPlay = new ArrayList<String>();
+
+               String[] names = new String[characterNames.size()];
+               for(int i=0; i<names.length; i++){
+            	   names[i]=characterNames.get(i);
+               }
+
+
+                for(int i = 0; i<numPlayers; i++){
+
+                	Object selection = JOptionPane.showInputDialog(container, "choose your player",
+                	        "Player selection", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
+                	 MyUtils.Log("[GUI] player selected: " + selection);
+
+                	 if(selection == null){
+                		 MyUtils.End("Player failed to pick a character.");
+                               }
+
+                	 CharactersInPlay.add((String) selection);
+
+                	 for(int j= 0 ; j < names.length ; j++){
+
+             			 if(selection.equals(names[j]) ){
+             				 MyUtils.Log(names[j]);
+             				 names[j]=null;
+                		 }
+
+                	 }
+
+                }
         	}});
 	}
 
