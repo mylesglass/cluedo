@@ -145,13 +145,6 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 
-				String[] options = new String[] {"1", "2","3","4","5","6"};
-				int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
-				numPlayers = name+1;
-
-				MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
-
-<<<<<<< HEAD
 				ArrayList<String> playersChoice = new ArrayList<String>();
 				charactersInPlay = new ArrayList<String>();
 
@@ -159,16 +152,11 @@ public class GUI {
 				for(int i=0; i<names.length; i++){
 					names[i]=characterNames.get(i);
 				}
-=======
                 String[] options = new String[] {"2","3","4","5","6"};
                 int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
         		 numPlayers = name+1;
 
-
-
                 MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
->>>>>>> 2d6ec0bbbeaf56236238f197d77d523cbcc5ab64
-
 
 				for(int i = 0; i<numPlayers; i++){
 
@@ -199,16 +187,8 @@ public class GUI {
 		});
 	}
 
-<<<<<<< HEAD
 	public ArrayList<String> getPlayers() {
 		return this.charactersInPlay;
-=======
-                }
-        	}});
-
-
-
->>>>>>> 2d6ec0bbbeaf56236238f197d77d523cbcc5ab64
 	}
 
 	public void updateCardNames(ArrayList<String> rooms, ArrayList<String> chars, ArrayList<String> weapons) {
