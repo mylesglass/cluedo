@@ -18,6 +18,7 @@ import cluedo.cards.RoomCard;
 public class Game {
 	private GUI gui;
 	private Board board;
+	private Boolean isReady = false;  //???
 	private ArrayList<Player> players;
 	private ArrayList<Card> deck;
 	private ArrayList<Room> rooms;
@@ -102,6 +103,7 @@ public class Game {
 		//	gui.roll(random);
 		return random;
 	}
+
 
 	private void initialisePlayer(Player player) {
 		// Need to create players checklist before dealing cards

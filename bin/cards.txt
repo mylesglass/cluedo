@@ -1,0 +1,25 @@
+ROOMS
+Kitchen
+Ballroom
+Conservatory
+Billiard Room
+Library
+Study
+Hall
+Lounge
+Dining Room
+CHARACTERS
+Miss Scarlett
+Colonel Mustard
+Mrs White
+reverend Green
+Mrs Peacock
+Professor Plum
+WEAPONS
+Candlestick
+Dagger
+Lead pipe
+Revolver
+Rope
+Spanner
+X

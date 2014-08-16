@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cluedo.squares.Square;
@@ -44,6 +47,9 @@ public class GUI {
 	public ArrayList<String> roomNames;
 	public ArrayList<String> characterNames;
 	public ArrayList<String> weaponNames;
+
+	//number of players, storing here temporarily.
+	private int numPlayers;
 
 	// GUI Components
 	private BoardPanel boardPanel;
@@ -95,8 +101,7 @@ public class GUI {
 		// Menu Bar
 		JPanel menuPanel = new JPanel();
 		JButton newGameButton = new JButton("New Game");
-
-		menuPanel.add(newGameButton);
+        menuPanel.add(newGameButton);
 		container.add(menuPanel);
 		menuPanel.setBounds(0, 0, gameWidth, MENU_BAR_SIZE);
 
@@ -130,6 +135,19 @@ public class GUI {
 
 		// Once all set up, make it visible
 		container.setVisible(true);
+
+
+		//NewGame button press events
+		newGameButton.addActionListener(new ActionListener(){
+
+        	public void actionPerformed(ActionEvent e) {
+
+                String[] options = new String[] {"1", "2","3","4","5","6"};
+                int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
+        		 numPlayers = name+1;
+
+                MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
+        	}});
 	}
 
 	public void updateCardNames(ArrayList<String> rooms, ArrayList<String> chars, ArrayList<String> weapons) {
