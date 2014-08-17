@@ -207,6 +207,7 @@ public class GUI {
 				if(wc.getName().equals(weap)) {
 					wc.setRoom(room);
 					wc.setPosition(room.getRandPos());
+					drawGame();
 				}
 			}
 
