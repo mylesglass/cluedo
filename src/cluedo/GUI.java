@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -64,11 +65,16 @@ public class GUI {
 	private ChecklistPanel checkListPanel;
 	private PlayerPanel playerPanel;
 	private JFrame container;
+	private JButton enter;
+	private JButton accuse;
 
 	private Board board;
 	private String state = "INIT";
 	private Boolean ready = false;
 	private Boolean gameFinished;
+
+	private Boolean canEnter = false;
+	private Boolean inRoom = false;
 
 	//Turn System
 	private Square selectedSquare;
@@ -170,6 +176,19 @@ public class GUI {
 		// Player Panel Component
 		playerPanel = new PlayerPanel(playerPanelWidth, playerPanelHeight);
 		checkListPanel.setPreferredSize(new Dimension(this.playerPanelWidth, this.playerPanelHeight));
+		ImageIcon door = new ImageIcon("cluedo/src/images/openDoor.jpeg");
+
+		JButton enter = new JButton("Open Door",door);
+        playerPanel.add(enter, BorderLayout.NORTH);
+        if(!canEnter){enter.setEnabled(false);}
+
+        JButton accuse = new JButton("Accuse!",door);
+        playerPanel.add(accuse, BorderLayout.NORTH);
+        if(!inRoom){accuse.setEnabled(false);}
+
+        JButton roll = new JButton("roll!");
+        playerPanel.add(roll, BorderLayout.NORTH);
+        roll.setEnabled(false);//need to set some change parameter
 
 		// Add Panels to Frame
 		container.add(boardPanel);
@@ -310,6 +329,11 @@ public class GUI {
 
 	public Boolean isReady(){
 		return this.ready;
+	}
+
+	public void setEnter(Boolean b){
+		canEnter = b;
+		enter.setEnabled(b);
 	}
 
 	public void initialiseCheckPanel() {
