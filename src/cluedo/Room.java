@@ -56,9 +56,10 @@ public class Room {
 		return this.room;
 
 	}
+	//TODO cehck to see if square is occupied.
 	public Position getRandPos(){
 		Collections.shuffle(roomsquares);
-		return(roomsquares.get(0).getPosition());
+		return(roomsquares.get(1).getPosition());
 
 	}
 }

@@ -120,6 +120,7 @@ public class Board {
 				if(board[w][h] instanceof RoomSquare) {
 					int roomnum = ((RoomSquare)board[w][h]).getRoomNumber() -1;
 					rooms.get(roomnum).addSquare((RoomSquare)board[w][h]);
+					MyUtils.Log("[Board] Adding "+board[w][h].toString()+ " to "+rooms.get(roomnum).getName());
 					((RoomSquare)board[w][h]).setRoom(rooms.get(roomnum));
 				}
 			}
@@ -131,7 +132,7 @@ public class Board {
 	public void addRoomToDoors() {
 		for(int h = 0; h < this.height; h++) {
 			for(int w = 0; w < this.width; w++) {
-				if(board[w][h] instanceof RoomSquare) {
+				if(board[w][h] instanceof DoorSquare) {
 					findRoom(w, h);
 				}
 			}
@@ -140,16 +141,16 @@ public class Board {
 
 	private void findRoom(int w, int h) {
 		if(board[w -1][h] instanceof RoomSquare) {
-			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w-1][h]).getRoom());
 		}
 		else if(board[w + 1][h] instanceof RoomSquare) {
-			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w+1][h]).getRoom());
 		}
 		else if(board[w][h + 1] instanceof RoomSquare) {
-			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h+1]).getRoom());
 		}
 		else if(board[w][h - 1] instanceof RoomSquare) {
-			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h-1]).getRoom());
 		}
 	}
 

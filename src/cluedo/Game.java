@@ -38,12 +38,12 @@ public class Game {
 	private ArrayList<String> characterNames;
 	private ArrayList<String> weaponNames;
 
-/**
- * holds all of the main functionality for game initialisation and then play,
- *  Parses cards using CardParser.
- *  Uses card parses to construct a deck, and to construct all characters.
- *  sets up game with selected players.
- */
+	/**
+	 * holds all of the main functionality for game initialisation and then play,
+	 *  Parses cards using CardParser.
+	 *  Uses card parses to construct a deck, and to construct all characters.
+	 *  sets up game with selected players.
+	 */
 	public Game() {
 		MyUtils.PrintLogo();
 
@@ -91,6 +91,7 @@ public class Game {
 		board = boardparse.parseBoard(new File("src/boards/newboard.txt"));
 		board.initBoard();
 		rooms = board.addSquaresToRooms(rooms);
+		board.addRoomToDoors();
 		board.initialiseSpawns(characters);
 		MyUtils.Log("[Game] Board Parsed and Constructed.");
 
@@ -128,20 +129,32 @@ public class Game {
 
 		gui.drawPlayersToBoard(players);
 		dealCards();
-        i=0;
+		i=0;
 		while(true){
 			gui.setCurrentPlayer(players.get(i));
 			int steps = rollDice();
 
 
 			if(players.get(i).getSquare().equals("D")){
-		           DoorSquare door = (DoorSquare)board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY());
-		           Room thisRoom = door.getRoom();
-		           players.get(i).setPos(thisRoom.getRandPos());
-					}
+				DoorSquare door = (DoorSquare)board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY());
+				Boolean b = (board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY()) instanceof DoorSquare);
+				MyUtils.Log("" + b);
+				Room thisRoom = door.getRoom();
+				MyUtils.Log(thisRoom.getName());
+				for(RoomSquare r: thisRoom.getSquares()){
+					MyUtils.Log(r.toString());
+				}
+
+				Position pos = thisRoom.getRandPos();
+
+
+
+				players.get(i).setPos(pos);
+				players.get(i).setSquare("R");
+			}
 
 			if(players.get(i).getSquare().equals("H")){
-			gui.takeTurn(steps);
+				gui.takeTurn(steps);
 			}
 
 
@@ -217,9 +230,9 @@ public class Game {
 		Game game = new Game();
 	}
 
-/**
- * deals cards to all players. also sets up the winningCombo, or the 3 cards that reveal the murder.
- */
+	/**
+	 * deals cards to all players. also sets up the winningCombo, or the 3 cards that reveal the murder.
+	 */
 	private void dealCards(){
 
 		Collections.shuffle(deck);
@@ -238,15 +251,15 @@ public class Game {
 		deck.remove(room);
 
 		winningCombo = new Accusation(charac, room, weap);
-	int c = 0;
-    int i= 0;
-	int j=0;
+		int c = 0;
+		int i= 0;
+		int j=0;
 		while(!deck.isEmpty()){
 			MyUtils.Log("[Game] "+ players.get(i).getName() + " got card: "+ deck.get(j).getName());
 			players.get(i).addCard(deck.get(j));
 			deck.remove(j);
 
-            c++;
+			c++;
 			if(i == players.size()-1){
 				i=0;
 			}
