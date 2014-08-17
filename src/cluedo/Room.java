@@ -1,13 +1,9 @@
 package cluedo;
 
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.Set;
 
-import cluedo.cards.Card;
 import cluedo.cards.RoomCard;
 import cluedo.squares.RoomSquare;
-
 
 /**
  * Represents a Room in its entirety, contains the set of RoomSquares

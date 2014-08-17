@@ -34,7 +34,6 @@ public class GUI {
 	private final int SQUARE_SIZE = 20;
 	private final int PANEL_SIZE = 300;
 	private final int MENU_BAR_SIZE = 60;
-	private final int TOKEN_SIZE = SQUARE_SIZE;
 
 	private int gameWidth;
 	private int gameHeight;
@@ -62,17 +61,17 @@ public class GUI {
 
 	// GUI Components
 	private BoardPanel boardPanel;
-	private CheckListPanel checkListPanel;
+	private ChecklistPanel checkListPanel;
 	private PlayerPanel playerPanel;
 	private JFrame container;
 
 	private Board board;
 	private String state = "INIT";
 	private Boolean ready = false;
+	private Boolean gameFinished;
 
 	//Turn System
 	private Square selectedSquare;
-
 
 
 	/**
@@ -88,20 +87,13 @@ public class GUI {
 	 * in order to
 	 */
 	public void takeTurn(int steps) {
-
-		MyUtils.Log("[GUI] "+currentPlayer.getPos().toString());
 		int stepsRemaining  = steps;
 		selectedSquare = null;
-		int count = 0;
 		MyUtils.Log("[GUI] "+currentPlayer.getName()+"  taking turn, rolled a "+stepsRemaining);
 		while(stepsRemaining > 0) {
-			count++;
-			MyUtils.Pause(500);
-			//MyUtils.Log("x");
+			MyUtils.Pause(100); // FIXME something more elegant here please
 
 			if(selectedSquare != null && selectedSquare instanceof HallSquare) {
-				int selectedSquareSum = selectedSquare.getPosition().getX()+ selectedSquare.getPosition().getY();
-				int currentSquareSum = currentPlayer.getPos().getX() + currentPlayer.getPos().getY();
 				int finalSum;
 
 				int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
@@ -111,19 +103,13 @@ public class GUI {
 
 				finalSum = xDiff+yDiff;
 
-
-				//MyUtils.Log("[GUI] finalSum : "+finalSum+" stepsRemaining: "+stepsRemaining);
-
 				if(finalSum <= stepsRemaining) {
 					stepsRemaining = stepsRemaining - finalSum;
 					currentPlayer.setPos(selectedSquare.getPosition());
-					//MyUtils.Log("[GUI][TakeTurn] "+currentPlayer.getName()+" has moved to "+selectedSquare.getPosition().toString());
 					drawBoard();
 					selectedSquare = null;
 				}
-
 			}
-
 		}
 	}
 
@@ -148,8 +134,6 @@ public class GUI {
 
 		this.gameWidth = playerPanelWidth;
 		this.gameHeight = playerPanelHeight + this.boardHeight + MENU_BAR_SIZE;
-
-		//Turn System
 
 		// Set Frame
 		container = new JFrame("Guess Who");
@@ -179,7 +163,7 @@ public class GUI {
 		});
 
 		//CheckList Drawing Component
-		checkListPanel = new CheckListPanel(checkPanelWidth, checkPanelHeight);
+		checkListPanel = new ChecklistPanel(checkPanelWidth, checkPanelHeight);
 		checkListPanel.setPreferredSize(new Dimension(this.checkPanelWidth, this.checkPanelHeight));
 		checkListPanel.setBackground(Color.GRAY);
 
@@ -238,6 +222,7 @@ public class GUI {
 					}
 
 				}
+				gameFinished = false;
 
 				state = "GAME";
 				ready = true;
@@ -280,6 +265,10 @@ public class GUI {
 	public void drawPlayersToBoard(ArrayList<Player> players) {
 		boardPanel.setPlayers(players);
 		boardPanel.repaint();
+	}
+
+	public boolean hasGameFinished() {
+		return this.gameFinished;
 	}
 
 	public void setCurrentPlayer(Player p) {
@@ -327,157 +316,3 @@ public class GUI {
 		this.checkListPanel.initCheckPanel(this.roomNames, this.characterNames, this.weaponNames);
 	}
 }
-
-class BoardPanel extends JPanel {
-	private final int SQUARE_SIZE = 20;
-	private int width;
-	private int height;
-	private Board board;
-	private ArrayList<Player> players;
-	private boolean hasPlayers = false;
-
-	public BoardPanel(Board board) {
-		this.board = board;
-		this.width = board.getWidth() * SQUARE_SIZE;
-		this.height = board.getHeight() * SQUARE_SIZE;
-		MyUtils.Log("[BoardPanel] Board Panel Created. Size: "+this.width+", "+this.height);
-	}
-
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
-		this.hasPlayers = true;
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, width, height);
-		board.draw(g, SQUARE_SIZE, 0);
-		if(hasPlayers) drawPlayers(g);
-	}
-
-	private void drawPlayers(Graphics g) {
-		for(Player p : players) {
-			p.draw(g, SQUARE_SIZE);
-			MyUtils.Log("[BoardPanel] Drawing player "+p.getName());
-		}
-	}
-}
-
-class CheckListPanel extends JPanel {
-	private int width;
-	private int height;
-
-	private final int OFFSET = 30;
-	private final int SPACING = 15;
-
-	private ArrayList<String> rooms;
-	private ArrayList<String> characters;
-	private ArrayList<String> weapons;
-
-	private boolean hasInit = false;
-
-	public CheckListPanel(int width, int height) {
-		this.width = width;
-		this.height = height;
-		MyUtils.Log("[CheckListPanel] Check List Panel Created. Size: "+width+", "+height);
-	}
-
-	public void initCheckPanel(ArrayList<String> rooms, ArrayList<String> characters, ArrayList<String> weapons) {
-		this.rooms = rooms;
-		this.characters = characters;
-		this.weapons = weapons;
-		hasInit = true;
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if(hasInit) drawList(g);
-	}
-
-	private void drawList(Graphics g) {
-		MyUtils.Log("[GUI] Drawing Check List");
-		int lineCount = 1;
-
-		g.setColor(Color.BLACK);
-
-		// Draw each of the room names
-		g.drawString("ROOMS", OFFSET, OFFSET + (SPACING * lineCount));
-		lineCount++;
-		for(String room : rooms) {
-			g.drawString("    "+room, OFFSET, OFFSET + (SPACING * lineCount));
-			lineCount++;
-		}
-
-		// Draw each of the character names
-		lineCount++;
-		g.drawString("CHARACTERS", OFFSET, OFFSET + (SPACING * lineCount));
-		lineCount++;
-		for(String character : characters) {
-			g.drawString("    "+character, OFFSET, OFFSET + (SPACING * lineCount));
-			lineCount++;
-		}
-
-		// Draw each of the weapon names
-		lineCount++;
-		g.drawString("WEAPONS", OFFSET, OFFSET + (SPACING * lineCount));
-		lineCount++;
-		for(String weapon : weapons) {
-			g.drawString("    "+weapon, OFFSET, OFFSET + (SPACING * lineCount));
-			lineCount++;
-		}
-	}
-}
-
-class PlayerPanel extends JPanel {
-	private int width;
-	private int height;
-	private Player currentPlayer;
-	private boolean hasPlayer = false;
-	private final int CARD_X_POS = 80;
-	private final int CARD_Y_POS = 50;
-	private final int CARD_WIDTH = 132;
-	private final int CARD_HEIGHT = 200;
-	private final int CARD_SPACING = 10;
-
-
-	public PlayerPanel(int width, int height) {
-		this.width = width;
-		this.height = height;
-		MyUtils.Log("[PlayerPanel] Player Panel Created. Size: "+width+", "+height);
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 0, width, height);
-		g.setColor(Color.LIGHT_GRAY);
-		g.drawString("Player Panel", 100, 100);
-		if(hasPlayer) {
-			drawPlayerCards(g);
-			MyUtils.Log("[PlayerPanel] Drawing "+currentPlayer.getName()+"'s cards on panel.");
-		}
-	}
-
-	private void drawPlayerCards(Graphics g) {
-		ArrayList<Card> cards = currentPlayer.getHand();
-		int count = 1;
-		for(Card c : cards) {
-			c.draw(g, (CARD_X_POS * count) - (CARD_SPACING * (count - 1)), CARD_Y_POS, CARD_WIDTH, CARD_HEIGHT);
-			count++;
-		}
-	}
-
-	public void setCurrentPlayer(Player p) {
-		this.currentPlayer = p;
-		this.hasPlayer = true;
-	}
-
-
-
-}
-
-

@@ -116,41 +116,7 @@ public class OldGUUI {
 		draw();
 	}
 
-	/**
-	 * Visually communicated to user that the mouse has been rolled.
-	 * Draws rolling graphic, and displays result.
-	 * @param result
-	 */
-	private int result;
-	private boolean rolling;
-
-	public void roll(int result) {
-		int interval = 2; // full time of roll in milliseconds
-		rolling = true;
-		while(interval < 800) {
-			this.result = (int) (1 + Math.random() * 6);
-			draw();
-			MyUtils.Pause(interval);
-			interval = (int) (interval * 1.5);
-
-		}
-		this.result = result;
-		draw();
-	}
-
-	/**
-	 * Draws Graphical repersentation of dice result.
-	 * @param g
-	 */
-	private final int DICE_SIZE = 150;
-
-	private void drawDice(Graphics g) {
-		g.setFont(diceFont);
-		g.setColor(Color.WHITE);
-		g.fillOval((boardWidth / 2) - (DICE_SIZE / 2), (boardHeight / 2) - (DICE_SIZE / 2), DICE_SIZE, DICE_SIZE);
-		g.setColor(Color.DARK_GRAY);
-		g.drawString(""+this.result, (boardWidth / 2) - 10, (boardHeight / 2) + 10);
-	}
+	
 
 	/**
 	 * Executes the correct method for drawing depending on the state of the screen.
@@ -175,7 +141,7 @@ public class OldGUUI {
 
 		// Draws Characters on board, and anything else that overlays board
 
-		if(rolling) drawDice(g);
+		
 	}
 
 	/**

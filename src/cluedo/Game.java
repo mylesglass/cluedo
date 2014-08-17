@@ -104,7 +104,7 @@ public class Game {
 
 		//FIXME only works if printing infinite loop??
 		while(true){
-			MyUtils.Log("[Game] ." + gui.isReady());
+			MyUtils.Pause(100);
 			if(gui.isReady()){
 				break;
 			}
@@ -114,7 +114,7 @@ public class Game {
 
 		MyUtils.Log("[Game] made it passed isReady!.");
 
-		players = new ArrayList();
+		players = new ArrayList<Player>();
 
 		initialisePlayers();
 
@@ -127,25 +127,20 @@ public class Game {
 		while(true){
 			gui.setCurrentPlayer(players.get(i));
 			int steps = rollDice();
-			int stepsLeft = steps;
-
 
 			gui.takeTurn(steps);
-
 
 			if(i==players.size()-1){
 				i=0;
 			}
 			else{i++;}
 
+			if(gui.hasGameFinished()) {
+				break;
+			}
 		}
 
-
-
-
-
-		//gui.setCurrentPlayer(players.get(0));
-		//gui.drawGame();
+		MyUtils.Log("[GAME] you won!????");
 	}
 
 
