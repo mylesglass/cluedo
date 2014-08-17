@@ -80,7 +80,7 @@ public class GUI {
 	private ChecklistPanel checkListPanel;
 	private PlayerPanel playerPanel;
 	private JFrame container;
-
+	JButton newGameButton;
 
 	private Board board;
 	private String state = "INIT";
@@ -237,7 +237,7 @@ public class GUI {
 				int finale = JOptionPane.showConfirmDialog(container,  "Do you wish to make a accusation!?",null, JOptionPane.YES_NO_OPTION);
 				if(finale == JOptionPane.YES_OPTION) {
 
-                if(suggestion==winner){
+                if(suggestion.equals(winner)){
 
                 	int readerBewareYouChoosetheScare = JOptionPane.showConfirmDialog(container,  "You just won man!!!! Collect your prize?",null, JOptionPane.YES_NO_OPTION);
 
@@ -334,7 +334,7 @@ public class GUI {
 
 		// Menu Bar
 		JPanel menuPanel = new JPanel();
-		JButton newGameButton = new JButton("New Game");
+		newGameButton = new JButton("New Game");
 		menuPanel.add(newGameButton);
 		container.add(menuPanel);
 		menuPanel.setBounds(0, 0, gameWidth, MENU_BAR_SIZE);
@@ -348,7 +348,12 @@ public class GUI {
 			public void mouseClicked(MouseEvent e) {
 				MyUtils.Log("[GUI][BOARD] Selected Square is "+getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE).toString());
 
+
 				selectedSquare = getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE);
+				if(selectedSquare instanceof RoomSquare){
+					MyUtils.Log("[GUI]Room: "+ ((RoomSquare)selectedSquare).getRoom().getName());
+
+				}
 			}
 		});
 
@@ -426,9 +431,10 @@ public class GUI {
 
 				}
 				gameFinished = false;
-
+                newGameButton.setEnabled(false);
 				state = "GAME";
 				ready = true;
+
 			}
 
 		});
