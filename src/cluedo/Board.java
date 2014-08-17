@@ -120,11 +120,37 @@ public class Board {
 				if(board[w][h] instanceof RoomSquare) {
 					int roomnum = ((RoomSquare)board[w][h]).getRoomNumber() -1;
 					rooms.get(roomnum).addSquare((RoomSquare)board[w][h]);
+					((RoomSquare)board[w][h]).setRoom(rooms.get(roomnum));
 				}
 			}
 		}
 
 		return rooms;
+	}
+
+	public void addRoomToDoors() {
+		for(int h = 0; h < this.height; h++) {
+			for(int w = 0; w < this.width; w++) {
+				if(board[w][h] instanceof RoomSquare) {
+					findRoom(w, h);
+				}
+			}
+		}
+	}
+
+	private void findRoom(int w, int h) {
+		if(board[w -1][h] instanceof RoomSquare) {
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+		}
+		else if(board[w + 1][h] instanceof RoomSquare) {
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+		}
+		else if(board[w][h + 1] instanceof RoomSquare) {
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+		}
+		else if(board[w][h - 1] instanceof RoomSquare) {
+			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h]).getRoom());
+		}
 	}
 
 

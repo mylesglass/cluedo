@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cluedo.Position;
-
 import cluedo.MyUtils;
+import cluedo.Room;
 
 
 /**
@@ -21,6 +21,7 @@ public class RoomSquare implements Square {
 	private Position position;
 	private int roomnum;
 	private Color color;
+	private Room room;
 
 	public RoomSquare(Position position, int num) {
 		this.position = position;
@@ -44,6 +45,14 @@ public class RoomSquare implements Square {
 	 */
 	public int getRoomNumber() {
 		return this.roomnum;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	public Room getRoom() {
+		return this.room;
 	}
 
 	/**
