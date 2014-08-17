@@ -136,14 +136,11 @@ public class Game {
 
 
 			if(players.get(i).getSquare().equals("D")){
+
 				DoorSquare door = (DoorSquare)board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY());
 				Boolean b = (board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY()) instanceof DoorSquare);
-				MyUtils.Log("" + b);
+
 				Room thisRoom = door.getRoom();
-				MyUtils.Log(thisRoom.getName());
-				for(RoomSquare r: thisRoom.getSquares()){
-					MyUtils.Log(r.toString());
-				}
 
 				Position pos = thisRoom.getRandPos();
 
@@ -151,6 +148,14 @@ public class Game {
 
 				players.get(i).setPos(pos);
 				players.get(i).setSquare("R");
+
+
+
+
+			}
+
+			if(players.get(i).getSquare().equals("R")){
+				gui.takeRoomTurn();
 			}
 
 			if(players.get(i).getSquare().equals("H")){

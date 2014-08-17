@@ -62,7 +62,9 @@ public class GUI {
 	private ArrayList<String> usernames;
 
 	// The player whose turn it is currently
+	//and players in play
 	private Player currentPlayer;
+	private ArrayList<Player> players;
 
 	// GUI Components
 	private BoardPanel boardPanel;
@@ -157,6 +159,28 @@ public class GUI {
 
 			}
 		}
+	}
+
+
+
+	public void takeRoomTurn(){
+		int result = JOptionPane.showConfirmDialog(null,  "Do you wish to make an suggestion?",null, JOptionPane.YES_NO_OPTION);
+				if(result == JOptionPane.NO_OPTION) {
+
+				}
+				else{
+					Object[] wN = weaponNames.toArray();
+					Object murderWeapon = JOptionPane.showInputDialog(container, "choose your player",
+                                  "Player selection", JOptionPane.QUESTION_MESSAGE, null, wN,wN[0] );
+
+					Object[] cN = characterNames.toArray();
+
+					Object murderer = JOptionPane.showInputDialog(container, "choose your player",
+                            "Player selection", JOptionPane.QUESTION_MESSAGE, null, cN,cN[0] );
+
+
+				}
+
 	}
 
 	/**
@@ -334,6 +358,7 @@ public class GUI {
 	 * @param players
 	 */
 	public void drawPlayersToBoard(ArrayList<Player> players) {
+		this.players = players;
 		boardPanel.setPlayers(players);
 		boardPanel.repaint();
 	}
