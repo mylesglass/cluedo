@@ -7,6 +7,7 @@ import java.util.List;
 
 import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
+import cluedo.squares.Square;
 
 public class Player {
 
@@ -17,6 +18,8 @@ public class Player {
     private Checklist checklist;
     private Position position;
     private Color color;
+    private String square = "H";
+
 
      /**
       * creates a player with all the necessary equipment for playing
@@ -151,6 +154,14 @@ public class Player {
 	public void initialiseHand(ArrayList<Card> card){
 
 		this.hand = card;
+	}
+
+	public void setSquare(String s){
+		this.square =s;
+	}
+	public String getSquare(){
+		return this.square;
+
 	}
 
 	/**

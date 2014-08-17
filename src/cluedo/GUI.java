@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cluedo.cards.Card;
+import cluedo.squares.DoorSquare;
 import cluedo.squares.HallSquare;
 import cluedo.squares.Square;
 
@@ -68,7 +69,7 @@ public class GUI {
 	private ChecklistPanel checkListPanel;
 	private PlayerPanel playerPanel;
 	private JFrame container;
-	private JButton enter;
+	private JButton enter = new JButton("Open Door");;
 	private JButton accuse;
 
 	private Board board;
@@ -103,8 +104,33 @@ public class GUI {
 		while(stepsRemaining > 0) {
 			MyUtils.Pause(100); // FIXME something more elegant here please
 
+
+            if(selectedSquare != null && selectedSquare instanceof DoorSquare){
+            	int finalSum;
+            	int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
+				int yDiff= selectedSquare.getPosition().getY()-currentPlayer.getPos().getY();
+				xDiff = Math.abs(xDiff);
+				yDiff = Math.abs(yDiff);
+
+				finalSum = xDiff+yDiff;
+
+				if(finalSum <= stepsRemaining) {
+					stepsRemaining = stepsRemaining - finalSum;
+					currentPlayer.setPos(selectedSquare.getPosition());
+					drawBoard();
+					currentPlayer.setSquare("D");
+					stepsRemaining = 0;
+
+				}
+
+
+            }
+
+
 			if(selectedSquare != null && selectedSquare instanceof HallSquare) {
 				int finalSum;
+
+
 
 				int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
 				int yDiff= selectedSquare.getPosition().getY()-currentPlayer.getPos().getY();
@@ -112,6 +138,8 @@ public class GUI {
 				yDiff = Math.abs(yDiff);
 
 				finalSum = xDiff+yDiff;
+
+
 
 				if(finalSum <= stepsRemaining) {
 					stepsRemaining = stepsRemaining - finalSum;
@@ -121,7 +149,11 @@ public class GUI {
 					selectedSquare = null;
 					playerPanel.setStepsRemaining(stepsRemaining);
 					drawPlayerPanel();
+
+                    currentPlayer.setSquare("H");
 				}
+
+
 
 			}
 		}

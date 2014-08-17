@@ -12,6 +12,8 @@ import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
 import cluedo.cards.RoomCard;
 import cluedo.cards.WeaponCard;
+import cluedo.squares.HallSquare;
+import cluedo.squares.RoomSquare;
 
 /**
  * Game holds all of the logic of Cluedo.
@@ -130,7 +132,16 @@ public class Game {
 			gui.setCurrentPlayer(players.get(i));
 			int steps = rollDice();
 
+
+			if(players.get(i).getSquare().equals("H")){
 			gui.takeTurn(steps);
+			}
+
+			if(players.get(i).getSquare().equals("D")){
+
+
+			}
+
 
 			if(i==players.size()-1){
 				i=0;
