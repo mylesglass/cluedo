@@ -9,6 +9,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import cluedo.MyUtils;
+import cluedo.Position;
+import cluedo.Room;
 
 
 /**
@@ -19,9 +21,27 @@ import cluedo.MyUtils;
 public class WeaponCard implements Card {
 	private String name;
 	private Image image;
+	private Room room;
+	private Position position;
 
 	public WeaponCard(String name) {
 		this.name = name;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setPosition(Position pos) {
+		this.position = pos;
+	}
+
+	public Position getPosition() {
+		return position;
 	}
 
 	/**

@@ -6,14 +6,17 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import cluedo.cards.WeaponCard;
+
 public class BoardPanel extends JPanel {
 	private final int SQUARE_SIZE = 20;
 	private int width;
 	private int height;
 	private Board board;
 	private ArrayList<Player> players;
+	private ArrayList<WeaponCard> weapons;
 	private boolean hasPlayers = false;
-
+	private boolean hasWeapons = false;
 
 	public BoardPanel(Board board) {
 		this.board = board;
@@ -27,14 +30,27 @@ public class BoardPanel extends JPanel {
 		this.hasPlayers = true;
 	}
 
+	public void updateWeapons(ArrayList<WeaponCard> weapons) {
+		this.weapons = weapons;
+		this.hasWeapons = true;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, width, height);
 		board.draw(g, SQUARE_SIZE, 0);
+		if(hasWeapons) drawWeapons(g);
 		if(hasPlayers) drawPlayers(g);
 
+	}
+
+	private void drawWeapons(Graphics g) {
+		for(WeaponCard wc : weapons) {
+			//Position roomPos = wc.getRoom().getRandPos();
+			wc.draw(g, wc.getPosition().getX() * SQUARE_SIZE, wc.getPosition().getY() * SQUARE_SIZE, SQUARE_SIZE * 2, SQUARE_SIZE * 3);
+		}
 	}
 
 

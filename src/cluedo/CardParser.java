@@ -26,7 +26,6 @@ public class CardParser {
 	private ArrayList<String> charColor;
 	private ArrayList<String> weaponNames;
 
-
 	public CardParser(){
 		cards = new ArrayList<Card>();
 		roomNames = new ArrayList<String>();
@@ -40,7 +39,6 @@ public class CardParser {
 			MyUtils.Log("[card parser] parseing cards!");
 			Scanner scanner = new Scanner(file);
 			String strLine = scanner.nextLine();
-
 
 			int i = 1;
 			if(strLine.equals("ROOMS")){

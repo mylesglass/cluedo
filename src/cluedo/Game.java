@@ -38,6 +38,8 @@ public class Game {
 	private ArrayList<String> characterNames;
 	private ArrayList<String> weaponNames;
 
+	private ArrayList<WeaponCard> weapons;
+
 	/**
 	 * holds all of the main functionality for game initialisation and then play,
 	 *  Parses cards using CardParser.
@@ -79,12 +81,25 @@ public class Game {
 
 		// Construct Rooms from Cards, and assign roomSquares to them
 		rooms = new ArrayList<Room>();
+		weapons = new ArrayList<WeaponCard>();
 		for(Card c : deck) {
 			if(c instanceof RoomCard) {
 				rooms.add(new Room((RoomCard)c));
 				MyUtils.Log("[Game] Constructed Room " + c.getName() + "  from deck.");
 			}
+
+			if(c instanceof WeaponCard) {
+				weapons.add((WeaponCard)c);
+			}
 		}
+		i = 0;
+		Collections.shuffle(rooms);
+		Collections.shuffle(weapons);
+		for(WeaponCard wc : weapons) {
+			wc.setRoom(rooms.get(i));
+			i++;
+		}
+
 
 		// Construct board from text file
 		BoardParser boardparse = new BoardParser();
@@ -128,6 +143,13 @@ public class Game {
 		}
 
 		gui.drawPlayersToBoard(players);
+
+		i = 0;
+		for(WeaponCard wc : weapons) {
+			wc.setPosition(rooms.get(i).getRandPos());
+			i++;
+		}
+		gui.drawWeaponsToBoard(weapons);
 		dealCards();
 		i=0;
 		while(true){

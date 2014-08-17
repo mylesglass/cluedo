@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cluedo.cards.Card;
+import cluedo.cards.WeaponCard;
 import cluedo.squares.DoorSquare;
 import cluedo.squares.HallSquare;
 import cluedo.squares.Square;
@@ -361,6 +362,11 @@ public class GUI {
 		this.players = players;
 		boardPanel.setPlayers(players);
 		boardPanel.repaint();
+	}
+
+	public void drawWeaponsToBoard(ArrayList<WeaponCard> weapons) {
+		boardPanel.updateWeapons(weapons);
+		drawBoard();
 	}
 
 	public boolean hasGameFinished() {

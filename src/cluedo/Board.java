@@ -120,7 +120,6 @@ public class Board {
 				if(board[w][h] instanceof RoomSquare) {
 					int roomnum = ((RoomSquare)board[w][h]).getRoomNumber() -1;
 					rooms.get(roomnum).addSquare((RoomSquare)board[w][h]);
-					MyUtils.Log("[Board] Adding "+board[w][h].toString()+ " to "+rooms.get(roomnum).getName());
 					((RoomSquare)board[w][h]).setRoom(rooms.get(roomnum));
 				}
 			}
