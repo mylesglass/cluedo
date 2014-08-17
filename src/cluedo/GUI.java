@@ -274,6 +274,8 @@ public class GUI {
 	public void setCurrentPlayer(Player p) {
 		this.currentPlayer = p;
 		playerPanel.setCurrentPlayer(p);
+		checkListPanel.setCurrentChecklist(p.getChecklist());
+		drawCheckList();
 		drawPlayerPanel();
 	}
 

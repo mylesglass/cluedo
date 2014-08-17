@@ -8,7 +8,7 @@ import cluedo.cards.Card;
 public class Checklist {
   private HashMap<String, Boolean> checklist;
 
-  
+
   /**
    * @author Neal Hartley && Myles Glass
    * @param room
@@ -30,9 +30,9 @@ public class Checklist {
 		for(String weaponName : weapon) checklist.put(weaponName, false);
 
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Given a single card, will check that card is contained in checklist and if so will check it off, map it to true.
 	 * @param card
@@ -55,11 +55,20 @@ public class Checklist {
 			MyUtils.Log("[Checklist] "+str+", "+checklist.get(str));
 		}
 	}
-	
-	
+
+	public boolean hasCardChecked(String cardName) {
+		for(String name : checklist.keySet()) {
+			if(name.equals((cardName))) {
+				return checklist.get(name);
+			}
+		}
+		return false;
+	}
+
+
 	public HashMap checkList(){
-		
+
 		return checklist;
-		
+
 	}
 }

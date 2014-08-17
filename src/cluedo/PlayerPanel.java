@@ -14,7 +14,7 @@ public class PlayerPanel extends JPanel {
 	private Player currentPlayer;
 	private boolean hasPlayer = false;
 	private final int CARD_X_POS = 80;
-	private final int CARD_Y_POS = 50;
+	private final int CARD_Y_POS = 100;
 	private final int CARD_WIDTH = 132;
 	private final int CARD_HEIGHT = 200;
 	private final int CARD_SPACING = 10;
@@ -52,7 +52,4 @@ public class PlayerPanel extends JPanel {
 		this.currentPlayer = p;
 		this.hasPlayer = true;
 	}
-
-
-
 }
