@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cluedo.cards.Card;
+import cluedo.squares.HallSquare;
 import cluedo.squares.Square;
 
 /**
@@ -69,12 +70,61 @@ public class GUI {
 	private String state = "INIT";
 	private Boolean ready = false;
 
+	//Turn System
+	private Square selectedSquare;
+
+
 
 	/**
 	 * Construct GUI Component for displaying any information needed for the user to play game
 	 */
 	public GUI() {
 
+	}
+
+	/**
+	 * Take Turn.
+	 * Use current player, and how many steps they have (via roll)
+	 * in order to
+	 */
+	public void takeTurn(int steps) {
+
+		MyUtils.Log("[GUI] "+currentPlayer.getPos().toString());
+		int stepsRemaining  = steps;
+		selectedSquare = null;
+		int count = 0;
+		MyUtils.Log("[GUI] "+currentPlayer.getName()+"  taking turn, rolled a "+stepsRemaining);
+		while(stepsRemaining > 0) {
+			count++;
+			MyUtils.Pause(500);
+			//MyUtils.Log("x");
+
+			if(selectedSquare != null && selectedSquare instanceof HallSquare) {
+				int selectedSquareSum = selectedSquare.getPosition().getX()+ selectedSquare.getPosition().getY();
+				int currentSquareSum = currentPlayer.getPos().getX() + currentPlayer.getPos().getY();
+				int finalSum;
+
+				int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
+				int yDiff= selectedSquare.getPosition().getY()-currentPlayer.getPos().getY();
+				xDiff = Math.abs(xDiff);
+				yDiff = Math.abs(yDiff);
+
+				finalSum = xDiff+yDiff;
+
+
+				//MyUtils.Log("[GUI] finalSum : "+finalSum+" stepsRemaining: "+stepsRemaining);
+
+				if(finalSum <= stepsRemaining) {
+					stepsRemaining = stepsRemaining - finalSum;
+					currentPlayer.setPos(selectedSquare.getPosition());
+					//MyUtils.Log("[GUI][TakeTurn] "+currentPlayer.getName()+" has moved to "+selectedSquare.getPosition().toString());
+					drawBoard();
+					selectedSquare = null;
+				}
+
+			}
+
+		}
 	}
 
 	/**
@@ -99,6 +149,8 @@ public class GUI {
 		this.gameWidth = playerPanelWidth;
 		this.gameHeight = playerPanelHeight + this.boardHeight + MENU_BAR_SIZE;
 
+		//Turn System
+
 		// Set Frame
 		container = new JFrame("Guess Who");
 		container.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -120,9 +172,9 @@ public class GUI {
 		boardPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MyUtils.Log("[GUI][BOARD] Mouse clicked on a "+getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE).toString());
+				MyUtils.Log("[GUI][BOARD] Selected Square is "+getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE).toString());
 
-
+				selectedSquare = getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE);
 			}
 		});
 
@@ -233,6 +285,7 @@ public class GUI {
 	public void setCurrentPlayer(Player p) {
 		this.currentPlayer = p;
 		playerPanel.setCurrentPlayer(p);
+		drawPlayerPanel();
 	}
 
 	private Square getSquareAt(int x, int y) {
@@ -262,6 +315,7 @@ public class GUI {
 	}
 
 	private void drawPlayerPanel() {
+
 		playerPanel.repaint();
 	}
 
@@ -404,6 +458,7 @@ class PlayerPanel extends JPanel {
 		g.drawString("Player Panel", 100, 100);
 		if(hasPlayer) {
 			drawPlayerCards(g);
+			MyUtils.Log("[PlayerPanel] Drawing "+currentPlayer.getName()+"'s cards on panel.");
 		}
 	}
 

@@ -130,7 +130,7 @@ public class Game {
 			int stepsLeft = steps;
 
 
-
+			gui.takeTurn(steps);
 
 
 			if(i==players.size()-1){
@@ -144,8 +144,8 @@ public class Game {
 
 
 
-		gui.setCurrentPlayer(players.get(0));
-		gui.drawGame();
+		//gui.setCurrentPlayer(players.get(0));
+		//gui.drawGame();
 	}
 
 
