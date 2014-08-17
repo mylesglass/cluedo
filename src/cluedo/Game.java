@@ -118,9 +118,11 @@ public class Game {
 
 		initialisePlayers();
 
-		for(Player p: players){
-			initialisePlayer(p);
+		for(int k = 0; k < players.size(); k++){
+			initialisePlayer(players.get(k));
+			players.get(k).setUsername(gui.getUsernames().get(k));
 		}
+
 		gui.drawPlayersToBoard(players);
 		dealCards();
         i=0;
@@ -236,10 +238,5 @@ public class Game {
 			}
 			else{i++;}
 		}
-		MyUtils.Log("[Game] i: "+i+" j: " + j );
-		MyUtils.Log("[Game] number of cards printed: "+c );
 	}
-
-
-
 }

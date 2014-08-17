@@ -57,6 +57,9 @@ public class GUI {
 	private int numPlayers;
 	private ArrayList<String> charactersInPlay;
 
+	//List of each of the users names
+	private ArrayList<String> usernames;
+
 	// The player whose turn it is currently
 	private Player currentPlayer;
 
@@ -94,6 +97,7 @@ public class GUI {
 	 */
 	public void takeTurn(int steps) {
 		int stepsRemaining  = steps;
+		playerPanel.setStepsRemaining(steps);
 		selectedSquare = null;
 		MyUtils.Log("[GUI] "+currentPlayer.getName()+"  taking turn, rolled a "+stepsRemaining);
 		while(stepsRemaining > 0) {
@@ -111,10 +115,14 @@ public class GUI {
 
 				if(finalSum <= stepsRemaining) {
 					stepsRemaining = stepsRemaining - finalSum;
+
 					currentPlayer.setPos(selectedSquare.getPosition());
 					drawBoard();
 					selectedSquare = null;
+					playerPanel.setStepsRemaining(stepsRemaining);
+					drawPlayerPanel();
 				}
+
 			}
 		}
 	}
@@ -129,7 +137,7 @@ public class GUI {
 
 		// Set dimensions with regards to board size
 		this.boardWidth = board.getWidth() * SQUARE_SIZE;
-		this.boardHeight = board.getHeight() * SQUARE_SIZE; // plus the hieght of any other components
+		this.boardHeight = board.getHeight() * SQUARE_SIZE; // plus the height of any other components
 
 		// Set dimensions for other panels
 		this.checkPanelWidth = PANEL_SIZE;
@@ -201,6 +209,7 @@ public class GUI {
 		// Once all set up, make it visible
 		container.setVisible(true);
 
+		usernames = new ArrayList<String>();
 
 		//NewGame button press events
 		newGameButton.addActionListener(new ActionListener(){
@@ -214,19 +223,26 @@ public class GUI {
 					names[i]=characterNames.get(i);
 				}
 				String[] options = new String[] {"2","3","4","5","6"};
-				int name = JOptionPane.showOptionDialog(container,"How many players?" ,"number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
+				int name = JOptionPane.showOptionDialog(container,"How many players?" ,"Number of players?",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null ,options,options[0]);
 				numPlayers = name+2;
 
 				MyUtils.Log("[GUI] New Game button pushed: " + numPlayers + " player selected");
 
 				for(int i = 0; i<numPlayers; i++){
 
+					Object nameInput = JOptionPane.showInputDialog(container, "Player "+(i + 1)+" enter your name:",
+							"Player selection", JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if(nameInput == null) {
+						MyUtils.End("[GUI][INIT] Player did not enter a name!");
+					}
+					usernames.add((String) nameInput);
+
 					Object selection = JOptionPane.showInputDialog(container, "choose your player",
 							"Player selection", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
 					MyUtils.Log("[GUI] player selected: " + selection);
 
 					if(selection == null){
-						MyUtils.End("Player failed to pick a character.");
+						MyUtils.End("[GUI][INIT] Player failed to pick a character.");
 					}
 
 					charactersInPlay.add((String) selection);
@@ -277,6 +293,10 @@ public class GUI {
 		return state;
 	}
 
+	public ArrayList<String> getUsernames() {
+		return this.usernames;
+	}
+
 	/**
 	 * Draw supplied list of players to board.
 	 * @param players
@@ -293,7 +313,7 @@ public class GUI {
 	public void setCurrentPlayer(Player p) {
 		this.currentPlayer = p;
 		playerPanel.setCurrentPlayer(p);
-		checkListPanel.setCurrentChecklist(p.getChecklist());
+		checkListPanel.setCurrentPlayer(p);
 		drawCheckList();
 		drawPlayerPanel();
 	}

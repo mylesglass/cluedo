@@ -10,9 +10,10 @@ import cluedo.cards.CharacterCard;
 
 public class Player {
 
-
+	private String username;
 	private String name;
     private ArrayList<Card> hand;
+    private Card card;
     private Checklist checklist;
     private Position position;
     private Color color;
@@ -24,6 +25,7 @@ public class Player {
       * @author Neal Hartley && Myles Glass
       */
 	public Player(CharacterCard card){
+		this.card = card;
 		this.name = card.getName();
 		hand = new ArrayList<Card>();
 	}
@@ -33,6 +35,20 @@ public class Player {
 	 */
 	public void setColor(Color c) {
 		this.color = c;
+	}
+
+	/**
+	 * Set user name
+	 */
+	public void setUsername(String usr) {
+		this.username = usr;
+	}
+
+	/**
+	 * Get the user name of this player
+	 */
+	public String getUsername() {
+		return this.username;
 	}
 
 	/**
@@ -47,6 +63,10 @@ public class Player {
 	 */
 	public Color getColor() {
 		return this.color;
+	}
+
+	public Card getCharacterCard() {
+		return this.card;
 	}
 
 	/**

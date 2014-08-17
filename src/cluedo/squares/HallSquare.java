@@ -51,6 +51,7 @@ public class HallSquare implements Square {
 
 	/**
 	 * Check to see if there is a door near to this hall square
+	 * @return true if directly outside door
 	 */
 	public boolean doorNear() {
 		return this.doorNear;

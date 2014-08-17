@@ -2,6 +2,7 @@ package cluedo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -21,6 +22,10 @@ public class PlayerPanel extends JPanel {
 	private final int CARD_WIDTH = 132;
 	private final int CARD_HEIGHT = 200;
 	private final int CARD_SPACING = 10;
+	private Font usernameFont = new Font("Dialog", Font.BOLD, 36);
+	private Font characterFont = new Font("Dialog", Font.PLAIN, 30);
+
+	private int stepsRemaining;
 
 
 	public PlayerPanel(int width, int height) {
@@ -36,12 +41,26 @@ public class PlayerPanel extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, width, height);
-		g.setColor(Color.LIGHT_GRAY);
-		g.drawString("Player Panel", 100, 100);
 		if(hasPlayer) {
+			// Write Names
+			g.setFont(usernameFont);
+			g.setColor(Color.WHITE);
+			g.drawString(currentPlayer.getUsername(), CARD_X_POS, 40);
+			g.setFont(characterFont);
+			g.drawString(currentPlayer.getName(), CARD_X_POS, 75);
+
+
+			//Draw Roll
+			g.drawString(stepsRemaining+" steps remaining", 450, 75);
+
+			// Draw cards
 			drawPlayerCards(g);
 			MyUtils.Log("[PlayerPanel] Drawing "+currentPlayer.getName()+"'s cards on panel.");
 		}
+	}
+
+	public void setStepsRemaining(int steps) {
+		this.stepsRemaining = steps;
 	}
 
 	private void drawPlayerCards(Graphics g) {
