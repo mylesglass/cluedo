@@ -151,6 +151,9 @@ public class Game {
 			i++;
 		}
 		gui.drawWeaponsToBoard(weapons);
+
+		gui.drawRoomNames(rooms);
+
 		dealCards();
 		i=0;
 		while(true){

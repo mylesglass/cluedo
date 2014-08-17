@@ -1,5 +1,6 @@
 package cluedo;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -109,6 +110,7 @@ public class Board {
 		for(int i = 0; i < this.getHeight(); i++) {
 			for(int j = 0; j < this.getWidth(); j++) {
 				this.getSquareAt(j, i).draw(g, squareSize, menuSize);
+
 			}
 		}
 	}
@@ -153,10 +155,10 @@ public class Board {
 
 	// FIXME this ain't gangsta
 	public void linkTunnels() {
-		tunnels.get(0).addPair(tunnels.get(2));
-		tunnels.get(2).addPair(tunnels.get(0));
-		tunnels.get(1).addPair(tunnels.get(3));
-		tunnels.get(3).addPair(tunnels.get(1));
+		tunnels.get(0).addPair(tunnels.get(3));
+		tunnels.get(3).addPair(tunnels.get(0));
+		tunnels.get(1).addPair(tunnels.get(2));
+		tunnels.get(2).addPair(tunnels.get(1));
 	}
 
 	private void findDoorRoom(int w, int h) {

@@ -37,6 +37,13 @@ public class TunnelSquare implements Square {
 	}
 
 	/**
+	 * Get the paired square of this tunnel
+	 */
+	public TunnelSquare getPair() {
+		return pairSquare;
+	}
+
+	/**
 	 * Get the position of this square
 	 * @return position
 	 */

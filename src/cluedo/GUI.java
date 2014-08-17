@@ -27,6 +27,7 @@ import cluedo.squares.DoorSquare;
 import cluedo.squares.HallSquare;
 import cluedo.squares.RoomSquare;
 import cluedo.squares.Square;
+import cluedo.squares.TunnelSquare;
 
 /**
  * Responsible for displaying any information that the user needs to play the game.
@@ -61,6 +62,7 @@ public class GUI {
 	public ArrayList<String> weaponNames;
 	public ArrayList<Card> cards;
 	private ArrayList<WeaponCard> weapons;
+
 
 	//number of players, storing here temporarily. && Characters in order of player.
 	private int numPlayers;
@@ -115,17 +117,17 @@ public class GUI {
 		while(stepsRemaining > 0) {
 			MyUtils.Pause(100); // FIXME something more elegant here please
 
-            //if a player moves into a doorsquare ends their turn and moves them into the room.
-            if(selectedSquare != null && selectedSquare instanceof DoorSquare){
-            	//math for working out if they can move that far.
-            	int finalSum;
-            	int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
+			//if a player moves into a doorsquare ends their turn and moves them into the room.
+			if(selectedSquare != null && selectedSquare instanceof DoorSquare){
+				//math for working out if they can move that far.
+				int finalSum;
+				int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
 				int yDiff= selectedSquare.getPosition().getY()-currentPlayer.getPos().getY();
 				xDiff = Math.abs(xDiff);
 				yDiff = Math.abs(yDiff);
 
 				finalSum = xDiff+yDiff;
-               //if they have enough movement left they can make move, updates all variables and details appropriate.
+				//if they have enough movement left they can make move, updates all variables and details appropriate.
 				if(finalSum <= stepsRemaining) {
 					stepsRemaining = stepsRemaining - finalSum;
 					currentPlayer.setPos(selectedSquare.getPosition());
@@ -136,9 +138,9 @@ public class GUI {
 				}
 
 
-            }
+			}
 
-             //if they try to move to a hallsquare works out what proportion of thier movement they have used in order to walk that far. or if they can move thier at all.
+			//if they try to move to a hallsquare works out what proportion of thier movement they have used in order to walk that far. or if they can move thier at all.
 			if(selectedSquare != null && selectedSquare instanceof HallSquare) {
 				int finalSum;
 
@@ -162,7 +164,7 @@ public class GUI {
 					playerPanel.setStepsRemaining(stepsRemaining);
 					drawPlayerPanel();
 
-                    currentPlayer.setSquare("H");
+					currentPlayer.setSquare("H");
 				}
 
 
@@ -172,13 +174,13 @@ public class GUI {
 	}
 
 
-/**
- * Method called in game in order let a character take a turn starting from within a room.
- */
+	/**
+	 * Method called in game in order let a character take a turn starting from within a room.
+	 */
 	public void takeRoomTurn(){
 		int result = JOptionPane.showConfirmDialog(container,  "Do you wish to make a suggestion?",null, JOptionPane.YES_NO_OPTION);
 		if(result == JOptionPane.NO_OPTION) {
-         moveOutRoom();
+			moveOutRoom();
 		}
 		else{
 			Object[] wN = weaponNames.toArray();
@@ -186,12 +188,12 @@ public class GUI {
 
 			Object murderWeapon = JOptionPane.showInputDialog(container, "choose the murder weapon!",
 					"Player selection", JOptionPane.QUESTION_MESSAGE, null, wN,wN[0] );
-            //if hits cancel, starts turn over.
+			//if hits cancel, starts turn over.
 			if(murderWeapon == null){takeRoomTurn(); return;}
 
 			Object murderer = JOptionPane.showInputDialog(container, "choose the murderer!",
 					"Player selection", JOptionPane.QUESTION_MESSAGE, null, cN,cN[0] );
-            //if hits cancel starts turn over.
+			//if hits cancel starts turn over.
 			if(murderer == null){takeRoomTurn(); return;}
 
 
@@ -237,20 +239,20 @@ public class GUI {
 				int finale = JOptionPane.showConfirmDialog(container,  "Do you wish to make a accusation!?",null, JOptionPane.YES_NO_OPTION);
 				if(finale == JOptionPane.YES_OPTION) {
 
-                if(suggestion==winner){
+					if(suggestion==winner){
 
-                	int readerBewareYouChoosetheScare = JOptionPane.showConfirmDialog(container,  "You just won man!!!! Collect your prize?",null, JOptionPane.YES_NO_OPTION);
+						int readerBewareYouChoosetheScare = JOptionPane.showConfirmDialog(container,  "You just won man!!!! Collect your prize?",null, JOptionPane.YES_NO_OPTION);
 
-                	if(readerBewareYouChoosetheScare == JOptionPane.YES_OPTION) {JOptionPane.showMessageDialog(container,  "Your prize is the honour of getting to give us an A+ ;)");}
+						if(readerBewareYouChoosetheScare == JOptionPane.YES_OPTION) {JOptionPane.showMessageDialog(container,  "Your prize is the honour of getting to give us an A+ ;)");}
 
 
 
-                }
-                else{
-                	JOptionPane.showMessageDialog(container,  "You risked it for the biscuit and unfortuantely it didn't pay off, now you have to give us an A+.");
-                	currentPlayer.setSquare("$");
+					}
+					else{
+						JOptionPane.showMessageDialog(container,  "You risked it for the biscuit and unfortuantely it didn't pay off, now you have to give us an A+.");
+						currentPlayer.setSquare("$");
 
-                }
+					}
 
 				}
 			}
@@ -268,12 +270,10 @@ public class GUI {
 			RoomSquare square = (RoomSquare)board.getSquareAt(current.getX(), current.getY());
 
 			if(selectedSquare instanceof DoorSquare){
-
-
 				Room thisRoom = square.getRoom();
-			   DoorSquare selected = (DoorSquare) selectedSquare;
+				DoorSquare selected = (DoorSquare) selectedSquare;
 
-			   if( selected.getRoom()==thisRoom){
+				if( selected.getRoom()==thisRoom){
 
 					currentPlayer.setPos(selectedSquare.getPosition());
 					currentPlayer.setSquare("H");
@@ -284,6 +284,16 @@ public class GUI {
 
 			}
 
+			else if(selectedSquare instanceof TunnelSquare) {
+				TunnelSquare selected = (TunnelSquare) selectedSquare;
+
+				if(selected.getRoom() == square.getRoom()) {
+					currentPlayer.setPos(selected.getPair().getRoom().getRandPos());
+					loopClause = false;
+					this.drawGame();
+				}
+			}
+
 		}
 
 	}
@@ -291,14 +301,14 @@ public class GUI {
 
 	public Card checkAccusation(Accusation a){
 		for(Player p: players){
-            if(p.equals(currentPlayer)){continue;}
+			if(p.equals(currentPlayer)){continue;}
 			for(Card c: p.getHand()){
 				// FIXME cancel both and get null point exception
-			 if(a.getKiller().equals(c.getName())   ||  a.getWeapon().equals(c.getName()) || a.getScene().equals(c.getName())   ){
+				if(a.getKiller().equals(c.getName())   ||  a.getWeapon().equals(c.getName()) || a.getScene().equals(c.getName())   ){
 
-				 return c;
-			 }
-		 }
+					return c;
+				}
+			}
 		}
 		return null;
 	}
@@ -351,6 +361,7 @@ public class GUI {
 				selectedSquare = getSquareAt(e.getX() / SQUARE_SIZE, e.getY() / SQUARE_SIZE);
 			}
 		});
+
 
 		//CheckList Drawing Component
 		checkListPanel = new ChecklistPanel(checkPanelWidth, checkPanelHeight);
@@ -492,6 +503,10 @@ public class GUI {
 	public void drawWeaponsToBoard(ArrayList<WeaponCard> weapons) {
 		boardPanel.updateWeapons(weapons);
 		drawBoard();
+	}
+
+	public void drawRoomNames(ArrayList<Room> rooms) {
+		boardPanel.setRooms(rooms);
 	}
 
 	public boolean hasGameFinished() {
