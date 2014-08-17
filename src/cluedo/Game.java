@@ -226,8 +226,7 @@ public class Game {
     int i= 0;
 	int j=0;
 		while(!deck.isEmpty()){
-			MyUtils.Log("[Game] player: "+ players.get(i).getName() );
-			MyUtils.Log("[Game]  got card: "+ deck.get(j).getName());
+			MyUtils.Log("[Game] "+ players.get(i).getName() + " got card: "+ deck.get(j).getName());
 			players.get(i).addCard(deck.get(j));
 			deck.remove(j);
 

@@ -41,7 +41,6 @@ public class BoardPanel extends JPanel {
 	private void drawPlayers(Graphics g) {
 		for(Player p : players) {
 			p.draw(g, SQUARE_SIZE);
-			MyUtils.Log("[BoardPanel] Drawing player "+p.getName());
 		}
 	}
 }
