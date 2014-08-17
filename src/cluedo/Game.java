@@ -93,7 +93,7 @@ public class Game {
 			}
 		}
 		i = 0;
-		Collections.shuffle(rooms);
+		
 		Collections.shuffle(weapons);
 		for(WeaponCard wc : weapons) {
 			wc.setRoom(rooms.get(i));
@@ -155,6 +155,7 @@ public class Game {
 		while(true){
 			gui.setCurrentPlayer(players.get(i));
 			int steps = rollDice();
+
 
 
 			if(players.get(i).getSquare().equals("D")){
@@ -278,6 +279,7 @@ public class Game {
 		deck.remove(room);
 
 		winningCombo = new Accusation(charac.getName(), room.getName(), weap.getName());
+		gui.setWinner(winningCombo);
 		int c = 0;
 		int i= 0;
 		int j=0;
