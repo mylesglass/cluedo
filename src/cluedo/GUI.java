@@ -56,6 +56,8 @@ public class GUI {
 	public ArrayList<String> roomNames;
 	public ArrayList<String> characterNames;
 	public ArrayList<String> weaponNames;
+	public ArrayList<Card> cards;
+	private ArrayList<WeaponCard> weapons;
 
 	//number of players, storing here temporarily. && Characters in order of player.
 	private int numPlayers;
@@ -191,11 +193,21 @@ public class GUI {
 			String weap = (String)murderWeapon;
 			String scene = room.getName();
 
+			for(WeaponCard wc : weapons) {
+				if(wc.getName().equals(weap)) {
+					wc.setRoom(room);
+					wc.setPosition(room.getRandPos());
+				}
+			}
+
+			boardPanel.updateWeapons(weapons);
+
 			for(Player p: players){
 				if(p.getName().equals(killer)){
 
 					p.setPos(room.getRandPos());
 					p.setSquare("R");
+
 					this.drawGame();
 
 				}
@@ -318,6 +330,7 @@ public class GUI {
 		// Once all set up, make it visible
 		container.setVisible(true);
 
+
 		usernames = new ArrayList<String>();
 
 		//NewGame button press events
@@ -346,7 +359,7 @@ public class GUI {
 					}
 					usernames.add((String) nameInput);
 
-					Object selection = JOptionPane.showInputDialog(container, "choose your player",
+					Object selection = JOptionPane.showInputDialog(container, "Choose your player",
 							"Player selection", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
 					MyUtils.Log("[GUI] player selected: " + selection);
 
@@ -380,6 +393,20 @@ public class GUI {
 	 */
 	public ArrayList<String> getPlayers() {
 		return this.charactersInPlay;
+	}
+
+	/**
+	 * Set cards
+	 */
+	public void setCards(ArrayList<Card> cards) {
+		this.cards = cards;
+	}
+
+	/**
+	 * Set Weapons
+	 */
+	public void setWeapons(ArrayList<WeaponCard> weapons) {
+		this.weapons = weapons;
 	}
 
 	/**

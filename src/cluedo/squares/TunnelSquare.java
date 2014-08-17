@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cluedo.Position;
+import cluedo.Room;
 
 /**
  * Tunnel Squares connect the corner rooms together.
@@ -14,6 +15,7 @@ public class TunnelSquare implements Square {
 	private Position position;
 	private Color color;
 	private TunnelSquare pairSquare;
+	private Room room;
 
 	public TunnelSquare(Position position) {
 		this.position = position;
@@ -48,6 +50,21 @@ public class TunnelSquare implements Square {
 	 */
 	public Color getColor() {
 		return color;
+	}
+
+	/**
+	 * Set the room that this tunnel square is contained in
+	 */
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	/**
+	 * Get the room this tunnel square is in
+	 * @return
+	 */
+	public Room getRoom() {
+		return this.room;
 	}
 
 	/**

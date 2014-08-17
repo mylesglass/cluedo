@@ -57,8 +57,10 @@ public class Game {
 		CardParser cardParser = new CardParser();
 		cardParser.parseCards(new File("src/cards.txt"));
 		this.deck = cardParser.getDeck();
+
 		gui.updateCardNames(cardParser.getRoomNames(), cardParser.getCharacterNames(), cardParser.getWeaponNames());
 		MyUtils.Log("[Game] Deck Parsed and Constructed.");
+
 
 		//construct players from cards.
 		characters = new ArrayList<Player>();
@@ -92,14 +94,14 @@ public class Game {
 				weapons.add((WeaponCard)c);
 			}
 		}
+
 		i = 0;
-		Collections.shuffle(rooms);
-		Collections.shuffle(weapons);
 		for(WeaponCard wc : weapons) {
 			wc.setRoom(rooms.get(i));
 			i++;
 		}
 
+		gui.setWeapons(weapons);
 
 		// Construct board from text file
 		BoardParser boardparse = new BoardParser();
@@ -107,6 +109,8 @@ public class Game {
 		board.initBoard();
 		rooms = board.addSquaresToRooms(rooms);
 		board.addRoomToDoors();
+		board.addRoomToTunnels();
+		board.linkTunnels();
 		board.initialiseSpawns(characters);
 		MyUtils.Log("[Game] Board Parsed and Constructed.");
 
@@ -216,7 +220,6 @@ public class Game {
 	private int rollDice() {
 		int random = (int) (1 + Math.random() * 6);
 		MyUtils.Log("[Game] User has rolled a: "+random);
-		//	gui.roll(random);
 		return random;
 	}
 

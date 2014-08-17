@@ -132,13 +132,34 @@ public class Board {
 		for(int h = 0; h < this.height; h++) {
 			for(int w = 0; w < this.width; w++) {
 				if(board[w][h] instanceof DoorSquare) {
-					findRoom(w, h);
+					findDoorRoom(w, h);
+				}
+			}
+		}
+	}
+	private ArrayList<TunnelSquare> tunnels;
+
+	public void addRoomToTunnels() {
+		tunnels = new ArrayList<TunnelSquare>();
+		for(int h = 0; h < this.height; h++) {
+			for(int w = 0; w < this.width; w++) {
+				if(board[w][h] instanceof TunnelSquare) {
+					tunnels.add((TunnelSquare)board[w][h]);
+					findTunnelRoom(w, h);
 				}
 			}
 		}
 	}
 
-	private void findRoom(int w, int h) {
+	// FIXME this ain't gangsta
+	public void linkTunnels() {
+		tunnels.get(0).addPair(tunnels.get(2));
+		tunnels.get(2).addPair(tunnels.get(0));
+		tunnels.get(1).addPair(tunnels.get(3));
+		tunnels.get(3).addPair(tunnels.get(1));
+	}
+
+	private void findDoorRoom(int w, int h) {
 		if(board[w -1][h] instanceof RoomSquare) {
 			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w-1][h]).getRoom());
 		}
@@ -150,6 +171,21 @@ public class Board {
 		}
 		else if(board[w][h - 1] instanceof RoomSquare) {
 			((DoorSquare)board[w][h]).setRoom(((RoomSquare)board[w][h-1]).getRoom());
+		}
+	}
+
+	private void findTunnelRoom(int w, int h) {
+		if(board[w -1][h] instanceof RoomSquare) {
+			((TunnelSquare)board[w][h]).setRoom(((RoomSquare)board[w-1][h]).getRoom());
+		}
+		else if(board[w + 1][h] instanceof RoomSquare) {
+			((TunnelSquare)board[w][h]).setRoom(((RoomSquare)board[w+1][h]).getRoom());
+		}
+		else if(board[w][h + 1] instanceof RoomSquare) {
+			((TunnelSquare)board[w][h]).setRoom(((RoomSquare)board[w][h+1]).getRoom());
+		}
+		else if(board[w][h - 1] instanceof RoomSquare) {
+			((TunnelSquare)board[w][h]).setRoom(((RoomSquare)board[w][h-1]).getRoom());
 		}
 	}
 
