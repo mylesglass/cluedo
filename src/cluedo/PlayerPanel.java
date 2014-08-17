@@ -1,9 +1,12 @@
 package cluedo;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import cluedo.cards.Card;
@@ -23,6 +26,8 @@ public class PlayerPanel extends JPanel {
 	public PlayerPanel(int width, int height) {
 		this.width = width;
 		this.height = height;
+
+
 		MyUtils.Log("[PlayerPanel] Player Panel Created. Size: "+width+", "+height);
 	}
 
