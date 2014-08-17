@@ -26,5 +26,20 @@ public class Accusation {
 	public String getWeapon(){return weapon;}
 
 
+	/**
+	 * equals method for comparing an object with an accusation.
+	 * @param Object o
+	 * @return Boolean
+	 */
+	public boolean equals(Object o){
+		if(!(o instanceof Accusation)){return false;}
+	    Accusation win = (Accusation) o;
+	    if(win.getKiller().equals(this.getKiller()) &&  win.getScene().equals(this.getScene()) && win.getWeapon().equals(this.getWeapon())){
+	    	return true;
+	    }
+
+		return false;
+	}
+
 
 }
