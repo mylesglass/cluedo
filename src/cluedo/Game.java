@@ -277,7 +277,7 @@ public class Game {
 		deck.remove(weap);
 		deck.remove(room);
 
-		winningCombo = new Accusation(charac, room, weap);
+		winningCombo = new Accusation(charac.getName(), room.getName(), weap.getName());
 		int c = 0;
 		int i= 0;
 		int j=0;

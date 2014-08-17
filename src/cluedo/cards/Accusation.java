@@ -2,9 +2,9 @@ package cluedo.cards;
 
 public class Accusation {
 
-	CharacterCard killer;
-	RoomCard crimeScene;
-	WeaponCard weapon;
+	private String killer;
+    private String crimeScene;
+	private String weapon;
 
 	/**
 	*contains three cards (one of each type) for making accusations
@@ -12,13 +12,18 @@ public class Accusation {
 	*@author Neal Hartley && Myles Glass
 	*/
 
-	public Accusation(CharacterCard c, RoomCard r, WeaponCard w){
+	public Accusation(String c, String r, String w){
 
 		killer= c;
 		crimeScene = r;
 		weapon = w;
 
 	}
+
+
+	public String getKiller(){return killer;}
+	public String getScene(){return crimeScene;}
+	public String getWeapon(){return weapon;}
 
 
 

@@ -20,10 +20,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import cluedo.cards.Accusation;
 import cluedo.cards.Card;
 import cluedo.cards.WeaponCard;
 import cluedo.squares.DoorSquare;
 import cluedo.squares.HallSquare;
+import cluedo.squares.RoomSquare;
 import cluedo.squares.Square;
 
 /**
@@ -166,22 +168,71 @@ public class GUI {
 
 	public void takeRoomTurn(){
 		int result = JOptionPane.showConfirmDialog(null,  "Do you wish to make an suggestion?",null, JOptionPane.YES_NO_OPTION);
-				if(result == JOptionPane.NO_OPTION) {
+		if(result == JOptionPane.NO_OPTION) {
+
+		}
+		else{
+			Object[] wN = weaponNames.toArray();
+			Object[] cN = characterNames.toArray();
+
+			Object murderWeapon = JOptionPane.showInputDialog(container, "choose the murder weapon!",
+					"Player selection", JOptionPane.QUESTION_MESSAGE, null, wN,wN[0] );
+
+			Object murderer = JOptionPane.showInputDialog(container, "choose the murderer!",
+					"Player selection", JOptionPane.QUESTION_MESSAGE, null, cN,cN[0] );
+
+
+
+
+			RoomSquare square = (RoomSquare)board.getSquareAt(currentPlayer.getPos().getX(), currentPlayer.getPos().getY()) ;
+			Room room = square.getRoom();
+
+			String killer = (String)murderer;
+			String weap = (String)murderWeapon;
+			String scene = room.getName();
+
+			for(Player p: players){
+				if(p.getName().equals(killer)){
+
+					p.setPos(room.getRandPos());
+					p.setSquare("R");
+					this.drawGame();
 
 				}
-				else{
-					Object[] wN = weaponNames.toArray();
-					Object murderWeapon = JOptionPane.showInputDialog(container, "choose your player",
-                                  "Player selection", JOptionPane.QUESTION_MESSAGE, null, wN,wN[0] );
+			}
 
-					Object[] cN = characterNames.toArray();
+			Accusation suggestion = new Accusation(killer, scene, weap);
+			Card clue = checkAccusation(suggestion);
 
-					Object murderer = JOptionPane.showInputDialog(container, "choose your player",
-                            "Player selection", JOptionPane.QUESTION_MESSAGE, null, cN,cN[0] );
+			if(clue!=null){
+
+				currentPlayer.getChecklist().checkOff(clue) ;
+				JOptionPane.showMessageDialog(null,"you got this card: "+clue.getName());}
+
+			else{
+				int finale = JOptionPane.showConfirmDialog(null,  "Do you wish to make a accusation!?",null, JOptionPane.YES_NO_OPTION);
+				if(finale == JOptionPane.YES_OPTION) {
+
+
 
 
 				}
+			}
+		}
+	}
 
+
+	public Card checkAccusation(Accusation a){
+		for(Player p: players){
+            if(p.equals(currentPlayer)){continue;}
+			for(Card c: p.getHand()){
+			 if(a.getKiller().equals(c.getName())   ||  a.getWeapon().equals(c.getName()) || a.getScene().equals(c.getName())   ){
+
+				 return c;
+			 }
+		 }
+		}
+		return null;
 	}
 
 	/**
