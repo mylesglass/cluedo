@@ -18,7 +18,8 @@ public class Player {
     private Checklist checklist;
     private Position position;
     private Color color;
-    private String square = "H";
+    private String square = "H"; //if loss square is set to "$"
+
 
 
      /**
@@ -171,5 +172,9 @@ public class Player {
 		g.setColor(this.color);
 		g.fillOval(position.getX() * size, position.getY() * size, size, size);
 	}
+
+
+
+
 
 }

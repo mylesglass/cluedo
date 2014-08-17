@@ -1,11 +1,8 @@
 package cluedo;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import cluedo.cards.Accusation;
 import cluedo.cards.Card;
@@ -13,8 +10,6 @@ import cluedo.cards.CharacterCard;
 import cluedo.cards.RoomCard;
 import cluedo.cards.WeaponCard;
 import cluedo.squares.DoorSquare;
-import cluedo.squares.HallSquare;
-import cluedo.squares.RoomSquare;
 
 /**
  * Game holds all of the logic of Cluedo.
@@ -96,6 +91,8 @@ public class Game {
 		}
 
 		i = 0;
+
+		Collections.shuffle(weapons);
 		for(WeaponCard wc : weapons) {
 			wc.setRoom(rooms.get(i));
 			i++;
@@ -159,6 +156,7 @@ public class Game {
 		while(true){
 			gui.setCurrentPlayer(players.get(i));
 			int steps = rollDice();
+
 
 
 			if(players.get(i).getSquare().equals("D")){
@@ -281,6 +279,7 @@ public class Game {
 		deck.remove(room);
 
 		winningCombo = new Accusation(charac.getName(), room.getName(), weap.getName());
+		gui.setWinner(winningCombo);
 		int c = 0;
 		int i= 0;
 		int j=0;

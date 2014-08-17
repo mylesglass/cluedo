@@ -52,6 +52,9 @@ public class GUI {
 	private int playerPanelWidth;
 	private int playerPanelHeight;
 
+	//the grand pubah, the one and holy, the winning accusation!
+	private Accusation winner;
+
 	// Checklist information
 	public ArrayList<String> roomNames;
 	public ArrayList<String> characterNames;
@@ -71,13 +74,13 @@ public class GUI {
 	private Player currentPlayer;
 	private ArrayList<Player> players;
 
+
 	// GUI Components
 	private BoardPanel boardPanel;
 	private ChecklistPanel checkListPanel;
 	private PlayerPanel playerPanel;
 	private JFrame container;
-	private JButton enter = new JButton("Open Door");;
-	private JButton accuse;
+
 
 	private Board board;
 	private String state = "INIT";
@@ -101,7 +104,8 @@ public class GUI {
 	/**
 	 * Take Turn.
 	 * Use current player, and how many steps they have (via roll)
-	 * in order to
+	 * in order to allow player to move across the board.
+	 *
 	 */
 	public void takeTurn(int steps) {
 		int stepsRemaining  = steps;
@@ -111,8 +115,9 @@ public class GUI {
 		while(stepsRemaining > 0) {
 			MyUtils.Pause(100); // FIXME something more elegant here please
 
-
+            //if a player moves into a doorsquare ends their turn and moves them into the room.
             if(selectedSquare != null && selectedSquare instanceof DoorSquare){
+            	//math for working out if they can move that far.
             	int finalSum;
             	int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
 				int yDiff= selectedSquare.getPosition().getY()-currentPlayer.getPos().getY();
@@ -120,7 +125,7 @@ public class GUI {
 				yDiff = Math.abs(yDiff);
 
 				finalSum = xDiff+yDiff;
-
+               //if they have enough movement left they can make move, updates all variables and details appropriate.
 				if(finalSum <= stepsRemaining) {
 					stepsRemaining = stepsRemaining - finalSum;
 					currentPlayer.setPos(selectedSquare.getPosition());
@@ -133,7 +138,7 @@ public class GUI {
 
             }
 
-
+             //if they try to move to a hallsquare works out what proportion of thier movement they have used in order to walk that far. or if they can move thier at all.
 			if(selectedSquare != null && selectedSquare instanceof HallSquare) {
 				int finalSum;
 
@@ -167,11 +172,13 @@ public class GUI {
 	}
 
 
-
+/**
+ * Method called in game in order let a character take a turn starting from within a room.
+ */
 	public void takeRoomTurn(){
-		int result = JOptionPane.showConfirmDialog(null,  "Do you wish to make an suggestion?",null, JOptionPane.YES_NO_OPTION);
+		int result = JOptionPane.showConfirmDialog(container,  "Do you wish to make a suggestion?",null, JOptionPane.YES_NO_OPTION);
 		if(result == JOptionPane.NO_OPTION) {
-
+         moveOutRoom();
 		}
 		else{
 			Object[] wN = weaponNames.toArray();
@@ -179,10 +186,13 @@ public class GUI {
 
 			Object murderWeapon = JOptionPane.showInputDialog(container, "choose the murder weapon!",
 					"Player selection", JOptionPane.QUESTION_MESSAGE, null, wN,wN[0] );
+            //if hits cancel, starts turn over.
+			if(murderWeapon == null){takeRoomTurn(); return;}
 
 			Object murderer = JOptionPane.showInputDialog(container, "choose the murderer!",
 					"Player selection", JOptionPane.QUESTION_MESSAGE, null, cN,cN[0] );
-
+            //if hits cancel starts turn over.
+			if(murderer == null){takeRoomTurn(); return;}
 
 
 
@@ -193,6 +203,7 @@ public class GUI {
 			String weap = (String)murderWeapon;
 			String scene = room.getName();
 
+<<<<<<< HEAD
 			for(WeaponCard wc : weapons) {
 				if(wc.getName().equals(weap)) {
 					wc.setRoom(room);
@@ -201,6 +212,9 @@ public class GUI {
 			}
 
 			boardPanel.updateWeapons(weapons);
+=======
+			MyUtils.Log("[GUI] room accusing from: "+scene);
+>>>>>>> fd6a2d7e06790df3de98411e807d6ab4119f0b21
 
 			for(Player p: players){
 				if(p.getName().equals(killer)){
@@ -219,18 +233,61 @@ public class GUI {
 			if(clue!=null){
 
 				currentPlayer.getChecklist().checkOff(clue) ;
-				JOptionPane.showMessageDialog(null,"you got this card: "+clue.getName());}
+				JOptionPane.showMessageDialog(container,"you got this card: "+clue.getName());}
 
 			else{
-				int finale = JOptionPane.showConfirmDialog(null,  "Do you wish to make a accusation!?",null, JOptionPane.YES_NO_OPTION);
+				int finale = JOptionPane.showConfirmDialog(container,  "Do you wish to make a accusation!?",null, JOptionPane.YES_NO_OPTION);
 				if(finale == JOptionPane.YES_OPTION) {
 
+                if(suggestion==winner){
+
+                	int readerBewareYouChoosetheScare = JOptionPane.showConfirmDialog(container,  "You just won man!!!! Collect your prize?",null, JOptionPane.YES_NO_OPTION);
+
+                	if(readerBewareYouChoosetheScare == JOptionPane.YES_OPTION) {JOptionPane.showMessageDialog(container,  "Your prize is the honour of getting to give us an A+ ;)");}
 
 
+
+                }
+                else{
+                	JOptionPane.showMessageDialog(container,  "You risked it for the biscuit and unfortuantely it didn't pay off, now you have to give us an A+.");
+                	currentPlayer.setSquare("$");
+
+                }
 
 				}
 			}
 		}
+	}
+
+	public void moveOutRoom(){
+		selectedSquare = null;
+		Boolean loopClause = true;
+		JOptionPane.showMessageDialog(container,  "select a door square in current room to leave from, (whisper* or maybe a secret tunnel).");
+		while(loopClause) {
+			MyUtils.Pause(100);
+
+			Position current = currentPlayer.getPos();
+			RoomSquare square = (RoomSquare)board.getSquareAt(current.getX(), current.getY());
+
+			if(selectedSquare instanceof DoorSquare){
+
+
+				Room thisRoom = square.getRoom();
+			   DoorSquare selected = (DoorSquare) selectedSquare;
+
+			   if( selected.getRoom()==thisRoom){
+
+					currentPlayer.setPos(selectedSquare.getPosition());
+					currentPlayer.setSquare("H");
+					loopClause = false;
+					this.drawGame();
+
+				}
+
+			}
+
+		}
+
 	}
 
 
@@ -307,18 +364,6 @@ public class GUI {
 		checkListPanel.setPreferredSize(new Dimension(this.playerPanelWidth, this.playerPanelHeight));
 		ImageIcon door = new ImageIcon("cluedo/src/images/openDoor.jpeg");
 
-		JButton enter = new JButton("Open Door",door);
-        playerPanel.add(enter, BorderLayout.NORTH);
-        if(!canEnter){enter.setEnabled(false);}
-
-        JButton accuse = new JButton("Accuse!",door);
-        playerPanel.add(accuse, BorderLayout.NORTH);
-        if(!inRoom){accuse.setEnabled(false);}
-
-        JButton roll = new JButton("roll!");
-        playerPanel.add(roll, BorderLayout.NORTH);
-        roll.setEnabled(false);//need to set some change parameter
-
 		// Add Panels to Frame
 		container.add(boardPanel);
 		boardPanel.setBounds(0, MENU_BAR_SIZE + 0, boardWidth, boardHeight);
@@ -335,6 +380,9 @@ public class GUI {
 
 		//NewGame button press events
 		newGameButton.addActionListener(new ActionListener(){
+
+
+
 
 			public void actionPerformed(ActionEvent e) {
 				// Construct empty list for storing character names
@@ -495,9 +543,10 @@ public class GUI {
 		return this.ready;
 	}
 
-	public void setEnter(Boolean b){
-		canEnter = b;
-		enter.setEnabled(b);
+
+	public void setWinner(Accusation a){
+		this.winner = a;
+		MyUtils.Log(this.winner.getKiller() + " : " + this.winner.getScene() + " : " + this.winner.getWeapon());
 	}
 
 	public void initialiseCheckPanel() {
