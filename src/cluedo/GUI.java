@@ -226,6 +226,7 @@ public class GUI {
 		for(Player p: players){
             if(p.equals(currentPlayer)){continue;}
 			for(Card c: p.getHand()){
+				// FIXME cancel both and get null point exception
 			 if(a.getKiller().equals(c.getName())   ||  a.getWeapon().equals(c.getName()) || a.getScene().equals(c.getName())   ){
 
 				 return c;
