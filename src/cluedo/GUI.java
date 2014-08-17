@@ -203,7 +203,6 @@ public class GUI {
 			String weap = (String)murderWeapon;
 			String scene = room.getName();
 
-<<<<<<< HEAD
 			for(WeaponCard wc : weapons) {
 				if(wc.getName().equals(weap)) {
 					wc.setRoom(room);
@@ -212,9 +211,7 @@ public class GUI {
 			}
 
 			boardPanel.updateWeapons(weapons);
-=======
 			MyUtils.Log("[GUI] room accusing from: "+scene);
->>>>>>> fd6a2d7e06790df3de98411e807d6ab4119f0b21
 
 			for(Player p: players){
 				if(p.getName().equals(killer)){
