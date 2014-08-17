@@ -12,6 +12,7 @@ import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
 import cluedo.cards.RoomCard;
 import cluedo.cards.WeaponCard;
+import cluedo.squares.DoorSquare;
 import cluedo.squares.HallSquare;
 import cluedo.squares.RoomSquare;
 
@@ -133,14 +134,16 @@ public class Game {
 			int steps = rollDice();
 
 
+			if(players.get(i).getSquare().equals("D")){
+		           DoorSquare door = (DoorSquare)board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY());
+		           Room thisRoom = door.getRoom();
+		           players.get(i).setPos(thisRoom.getRandPos());
+					}
+
 			if(players.get(i).getSquare().equals("H")){
 			gui.takeTurn(steps);
 			}
 
-			if(players.get(i).getSquare().equals("D")){
-
-
-			}
 
 
 			if(i==players.size()-1){

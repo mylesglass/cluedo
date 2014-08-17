@@ -1,6 +1,7 @@
 package cluedo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import cluedo.cards.RoomCard;
 import cluedo.squares.RoomSquare;
@@ -53,6 +54,11 @@ public class Room {
 	 */
 	public RoomCard getRoom(){
 		return this.room;
+
+	}
+	public Position getRandPos(){
+		Collections.shuffle(roomsquares);
+		return(roomsquares.get(0).getPosition());
 
 	}
 }

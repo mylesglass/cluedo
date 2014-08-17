@@ -59,7 +59,14 @@ public class DoorSquare implements Square {
 	public Color getColor() {
 		return color;
 	}
+	/**
+	 * returns this doors room.
+	 * @return
+	 */
+	public Room getRoom(){
 
+	return this.room;
+	}
 	/**
 	 * Print out char representing type of square. For testing purposes.
 	 */
