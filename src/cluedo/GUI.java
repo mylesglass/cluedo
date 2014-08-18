@@ -42,7 +42,7 @@ import cluedo.squares.TunnelSquare;
  *	TODO accusation button on player panel
  */
 public class GUI {
-	private final int SQUARE_SIZE = 20;
+	private final int SQUARE_SIZE = 25;
 	private final int PANEL_SIZE = 300;
 	private final int MENU_BAR_SIZE = 60;
 
@@ -286,6 +286,7 @@ public class GUI {
 			RoomSquare square = (RoomSquare)board.getSquareAt(current.getX(), current.getY());
 
 			if(selectedSquare instanceof DoorSquare){
+				new SFX("src/sounds/door.wav");
 				Room thisRoom = square.getRoom();
 				DoorSquare selected = (DoorSquare) selectedSquare;
 
@@ -453,7 +454,7 @@ public class GUI {
 					if(selection == null){
 						i--;
 
-					
+
 						JOptionPane.showMessageDialog(container,  "you selected a non active character, closing program.");
 
 						System.exit(0);

@@ -18,6 +18,7 @@ import cluedo.MyUtils;
 public class CharacterCard implements Card {
 	private String name;
 	private Image image;
+	private Image icon;
 
 	public CharacterCard(String name) {
 		this.name = name;
@@ -44,6 +45,18 @@ public class CharacterCard implements Card {
 	}
 
 	/**
+	 * Add Player Icon Image to card
+	 */
+	public void addPlayerIcon(String path) {
+		try {
+			this.icon = ImageIO.read(new File(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+			MyUtils.End("Invalid Image Path, Fool");
+		}
+	}
+
+	/**
 	 * Draws card on Player Panel graphics component
 	 */
 	public void draw(Graphics g, int x, int y, int width, int height) {
@@ -54,6 +67,13 @@ public class CharacterCard implements Card {
 		//g.setColor(Color.BLACK);
 		//g.drawRect(x, y, width, height);
 		//g.drawString(this.name, x + 20, y + 20);
+	}
+
+	/**
+	 * Draws card on Player Panel graphics component
+	 */
+	public void drawIcon(Graphics g, int x, int y, int width, int height) {
+		g.drawImage(this.icon, x, y, width, height, null);
 	}
 
 }

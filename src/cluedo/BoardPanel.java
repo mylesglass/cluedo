@@ -2,8 +2,12 @@ package cluedo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import cluedo.cards.WeaponCard;
@@ -11,7 +15,7 @@ import cluedo.squares.RoomSquare;
 import cluedo.squares.Square;
 
 public class BoardPanel extends JPanel {
-	private final int SQUARE_SIZE = 20;
+	private final int SQUARE_SIZE = 25;
 	private int width;
 	private int height;
 	private Board board;
@@ -21,12 +25,19 @@ public class BoardPanel extends JPanel {
 	private boolean hasPlayers = false;
 	private boolean hasWeapons = false;
 	private boolean hasRooms = false;
+	private Image centerImage;
 
 	public BoardPanel(Board board) {
 		this.board = board;
 		this.width = board.getWidth() * SQUARE_SIZE;
 		this.height = board.getHeight() * SQUARE_SIZE;
 		MyUtils.Log("[BoardPanel] Board Panel Created. Size: "+this.width+", "+this.height);
+
+		try {
+			this.centerImage = ImageIO.read(new File("src/images/center.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setPlayers(ArrayList<Player> players) {
@@ -50,7 +61,9 @@ public class BoardPanel extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, width, height);
+
 		board.draw(g, SQUARE_SIZE, 0);
+		g.drawImage(centerImage, 11 * SQUARE_SIZE, 11 * SQUARE_SIZE, 5 * SQUARE_SIZE, 7 * SQUARE_SIZE, null);
 		if(hasWeapons) drawWeapons(g);
 		if(hasPlayers) drawPlayers(g);
 		if(hasRooms) drawRoomNames(g);
@@ -85,7 +98,7 @@ public class BoardPanel extends JPanel {
 	private void drawWeapons(Graphics g) {
 		for(WeaponCard wc : weapons) {
 			//Position roomPos = wc.getRoom().getRandPos();
-			wc.draw(g, wc.getPosition().getX() * SQUARE_SIZE, wc.getPosition().getY() * SQUARE_SIZE, SQUARE_SIZE * 2, SQUARE_SIZE * 3);
+			wc.drawIcon(g, wc.getPosition().getX() * SQUARE_SIZE, wc.getPosition().getY() * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
 		}
 	}
 

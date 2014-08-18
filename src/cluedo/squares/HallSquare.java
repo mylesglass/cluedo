@@ -2,6 +2,11 @@ package cluedo.squares;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import cluedo.Position;
 
@@ -19,10 +24,17 @@ public class HallSquare implements Square {
 	private Position position;
 	private Color color;
 	private Boolean doorNear = false;
+	private Image image;
 
 	public HallSquare(Position position) {
 		this.position = position;
 		this.color = Color.LIGHT_GRAY;
+
+		try {
+			this.image = ImageIO.read(new File("src/images/squares/square-hall.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -78,11 +90,15 @@ public class HallSquare implements Square {
 	 * @param int size of square
 	 * @param y Offset cause by menu bar above
 	 */
-	public void draw(Graphics g, int squareSize, int yOffset) {
+	public void drawSSSS(Graphics g, int squareSize, int yOffset) {
 		if(this.doorNear()) this.color = Color.GRAY;
 		g.setColor(this.color);
 		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
 		g.setColor(Color.GRAY);
 		g.drawRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
+	}
+
+	public void draw(Graphics g, int squareSize, int menuSize) {
+		g.drawImage(this.image,  position.getX() * squareSize,  (position.getY() * squareSize),  squareSize, squareSize, null);
 	}
 }

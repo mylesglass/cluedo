@@ -2,10 +2,15 @@ package cluedo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import cluedo.cards.CharacterCard;
 
 public class ChecklistPanel extends JPanel {
 	private int width;
@@ -18,6 +23,9 @@ public class ChecklistPanel extends JPanel {
 	private ArrayList<String> characters;
 	private ArrayList<String> weapons;
 
+	private Image checkedImage;
+	private Image uncheckedImage;
+
 	private Player currentPlayer;
 
 	private boolean hasInit = false;
@@ -27,6 +35,13 @@ public class ChecklistPanel extends JPanel {
 		this.width = width;
 		this.height = height;
 		MyUtils.Log("[CheckListPanel] Check List Panel Created. Size: "+this.width+", "+this.height);
+
+		try {
+			checkedImage = ImageIO.read(new File("src/images/checked.png"));
+			uncheckedImage = ImageIO.read(new File("src/images/unchecked.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void initCheckPanel(ArrayList<String> rooms, ArrayList<String> characters, ArrayList<String> weapons) {
@@ -54,7 +69,7 @@ public class ChecklistPanel extends JPanel {
 	private void drawCharacter(Graphics g) {
 		g.setColor(currentPlayer.getColor());
 		g.fillRect(0, height - 50, width, 50);
-		currentPlayer.getCharacterCard().draw(g, 80, 450, 132, 200);
+		((CharacterCard)currentPlayer.getCharacterCard()).drawIcon(g, this.width / 2, this.height - (this.width / 2), 200, 300);
 	}
 
 	private void drawList(Graphics g) {
@@ -70,6 +85,10 @@ public class ChecklistPanel extends JPanel {
 				g.setColor(Color.BLACK);
 				if(currentPlayer.getChecklist().hasCardChecked(room)) {
 					g.setColor(Color.LIGHT_GRAY);
+					g.drawImage(checkedImage, OFFSET - 5, OFFSET + (SPACING * lineCount) - SPACING, 20, 20, null);
+				}
+				else {
+					g.drawImage(uncheckedImage, OFFSET - 5, OFFSET + (SPACING * lineCount) - SPACING , 20, 20, null);
 				}
 				g.drawString("    "+room, OFFSET, OFFSET + (SPACING * lineCount));
 				lineCount++;
@@ -84,6 +103,10 @@ public class ChecklistPanel extends JPanel {
 				g.setColor(Color.BLACK);
 				if(currentPlayer.getChecklist().hasCardChecked(character)) {
 					g.setColor(Color.LIGHT_GRAY);
+					g.drawImage(checkedImage, OFFSET - 5, OFFSET + (SPACING * lineCount) - SPACING, 20, 20, null);
+				}
+				else {
+					g.drawImage(uncheckedImage, OFFSET - 5, OFFSET + (SPACING * lineCount) - SPACING , 20, 20, null);
 				}
 				g.drawString("    "+character, OFFSET, OFFSET + (SPACING * lineCount));
 				lineCount++;
@@ -98,6 +121,10 @@ public class ChecklistPanel extends JPanel {
 				g.setColor(Color.BLACK);
 				if(currentPlayer.getChecklist().hasCardChecked(weapon)) {
 					g.setColor(Color.LIGHT_GRAY);
+					g.drawImage(checkedImage, OFFSET - 5, OFFSET + (SPACING * lineCount) - SPACING, 20, 20, null);
+				}
+				else {
+					g.drawImage(uncheckedImage, OFFSET - 5, OFFSET + (SPACING * lineCount) - SPACING , 20, 20, null);
 				}
 				g.drawString("    "+weapon, OFFSET, OFFSET + (SPACING * lineCount));
 				lineCount++;

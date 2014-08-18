@@ -2,6 +2,11 @@ package cluedo.squares;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import cluedo.Position;
 import cluedo.Room;
@@ -16,10 +21,18 @@ public class TunnelSquare implements Square {
 	private Color color;
 	private TunnelSquare pairSquare;
 	private Room room;
+	private Image image;
 
 	public TunnelSquare(Position position) {
 		this.position = position;
 		this.color = Color.MAGENTA;
+
+		try {
+			this.image = ImageIO.read(new File("src/images/squares/square-tunnel.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -96,8 +109,7 @@ public class TunnelSquare implements Square {
 	 * @param int size of square
 	 * @param y Offset cause by menu bar above
 	 */
-	public void draw(Graphics g, int squareSize, int yOffset) {
-		g.setColor(this.color);
-		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
+	public void draw(Graphics g, int squareSize, int menuSize) {
+		g.drawImage(this.image,  position.getX() * squareSize,  (position.getY() * squareSize),  squareSize, squareSize, null);
 	}
 }

@@ -2,6 +2,11 @@ package cluedo.squares;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import cluedo.Position;
 import cluedo.MyUtils;
@@ -22,20 +27,28 @@ public class RoomSquare implements Square {
 	private int roomnum;
 	private Color color;
 	private Room room;
+	private Image image;
 
 	public RoomSquare(Position position, int num) {
 		this.position = position;
 		this.roomnum = num;
 		switch(roomnum) {
 			case 1 : color = Color.decode("#F0F3EA"); break;
-			case 2 : color = Color.decode("#835788"); break;
-			case 3 : color = Color.decode("#CF202D"); break;
-			case 4 : color = Color.decode("#E1D71E"); break;
-			case 5 : color = Color.decode("#3E88B9"); break;
-			case 6 : color = Color.decode("#C4AC28"); break;
-			case 7 : color = Color.decode("#617F1B"); break;
-			case 8 : color = Color.decode("#4C3957"); break;
-			case 9 : color = Color.decode("#835788"); break;
+			case 2 : color = Color.decode("#F3DFF5"); break;
+			case 3 : color = Color.decode("#F7CBCE"); break;
+			case 4 : color = Color.decode("#F2F0C9"); break;
+			case 5 : color = Color.decode("#C3D9E8"); break;
+			case 6 : color = Color.decode("#EDE3AD"); break;
+			case 7 : color = Color.decode("#E0EDC0"); break;
+			case 8 : color = Color.decode("#D7C3E3"); break;
+			case 9 : color = Color.decode("#E4BEE8"); break;
+		}
+
+		try {
+			this.image = ImageIO.read(new File("src/images/squares/square-room.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		//MyUtils.Log("[RoomSquare] Created at ("+position.getX()+","+position.getY()+") with room number "+roomnum);
 	}
@@ -92,8 +105,8 @@ public class RoomSquare implements Square {
 	 * @param int size of square
 	 * @param y Offset cause by menu bar above
 	 */
-	public void draw(Graphics g, int squareSize, int yOffset) {
+	public void draw(Graphics g, int squareSize, int menuSize) {
 		g.setColor(this.color);
-		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
+		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize), squareSize, squareSize);
 	}
 }

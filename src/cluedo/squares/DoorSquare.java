@@ -2,6 +2,11 @@ package cluedo.squares;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import cluedo.Position;
 import cluedo.Room;
@@ -20,12 +25,17 @@ public class DoorSquare implements Square {
 	private HallSquare hallSquare;
 	private Room room;
 	private Color color;
+	private Image image;
 
 	public DoorSquare(Position position) {
 		this.position = position;
 		//this.room = room;
 		this.color = Color.RED;
-
+		try {
+			this.image = ImageIO.read(new File("src/images/squares/square-door.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -88,9 +98,7 @@ public class DoorSquare implements Square {
 	 * @param int size of square
 	 * @param y Offset cause by menu bar above
 	 */
-	public void draw(Graphics g, int squareSize, int yOffset) {
-		g.setColor(this.color);
-		g.fillRect(position.getX() * squareSize, (position.getY() * squareSize) + yOffset, squareSize, squareSize);
+	public void draw(Graphics g, int squareSize, int menuSize) {
+		g.drawImage(this.image,  position.getX() * squareSize,  (position.getY() * squareSize),  squareSize, squareSize, null);
 	}
-
 }

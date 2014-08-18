@@ -46,7 +46,7 @@ public class CardParser {
 				while(!strLine.equals("CHARACTERS")){
 					MyUtils.Log("[CardParser] adding room: " + strLine);
 					RoomCard rc = new RoomCard(strLine);
-					rc.addImage("src/images/room-"+i+".png");
+					rc.addImage("src/images/cards/room-"+i+".png");
 					i++;
 					cards.add(rc);
 					roomNames.add(strLine);
@@ -60,7 +60,8 @@ public class CardParser {
 				while(!strLine.equals("WEAPONS")){
 					MyUtils.Log("[CardParser] adding character: " + strLine);
 					CharacterCard cc = new CharacterCard(strLine);
-					cc.addImage("src/images/char-"+i+".png");
+					cc.addImage("src/images/cards/char-"+i+".png");
+					cc.addPlayerIcon("src/images/charicon/playericon-"+i+".png");
 					i++;
 					cards.add(cc);
 					characterNames.add(strLine);
@@ -80,7 +81,8 @@ public class CardParser {
 				while(!strLine.equals("X")){
 					MyUtils.Log("[CardParser] adding weapon: " + strLine);
 					WeaponCard wc = new WeaponCard(strLine);
-					wc.addImage("src/images/weapon-"+i+".png");
+					wc.addImage("src/images/cards/weapon-"+i+".png");
+					wc.addIcon("src/images/icons/icon-"+i+".png");
 					i++;
 					cards.add(wc);
 					weaponNames.add(strLine);
