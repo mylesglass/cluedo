@@ -1,6 +1,6 @@
 package cluedoTestSuite;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import cluedo.Checklist;
 import cluedo.Player;
 import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
+import cluedo.cards.WeaponCard;
 
 /**
  *
@@ -35,7 +36,7 @@ public class playerTest {
 	 */
 	@Test public void PlayerCreation(){
 		Player harryPotter = new Player(card);
-		assert(card.getName().equals(harryPotter.getName()));
+		assertTrue(card.getName().equals(harryPotter.getName()));
 	}
 
 	/**
@@ -76,11 +77,52 @@ public class playerTest {
 		harryPotter.addChecklist(checkList);
 		harryPotter.addCard(card);
 
-	    harryPotter.checkhand(card);
+	    assertTrue(harryPotter.checkhand(card));
+	    assertFalse(harryPotter.checkhand(new WeaponCard("SectumSempra")));
 	}
 
+
+	@Test public void addCardsTest(){  
+
+		Player harryPotter = new Player(card);
+		String s = "Harry Potter";
+		characters.add(s);
+		weapons.add("deathstick");
+		rooms.add("Chamber of Secrets");
+		Checklist checkList = new Checklist(rooms,characters,weapons);
+		harryPotter.addChecklist(checkList);
+		
+		harryPotter.initialiseHand(hand);
+		
+		ArrayList<Card> adder = new ArrayList<Card>();
+		adder.add(new WeaponCard(s));
 	
+		harryPotter.addCards(adder);
+		
+		Checklist c = harryPotter.getChecklist();
+		assertTrue(c.hasCardChecked(s));
+		
+	}
 
-
+	@Test public void getCard(){
+		Player harryPotter = new Player(card);
+		assert(harryPotter.getCharacterCard() == card);
+		
+	}
+	@Test public void getName(){
+		Player harryPotter = new Player(card);
+		assert(harryPotter.getName().equals("Harry Potter"));
+		
+	}
+	
+	@Test public void setGetUserName(){
+		Player harryPotter = new Player(card);
+		String userName = "Dumbledore";
+		harryPotter.setUsername(userName);
+		assertTrue(harryPotter.getUsername().equals(userName));
+		
+	}
+	
+	
 
 }
