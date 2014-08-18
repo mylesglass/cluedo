@@ -2,14 +2,7 @@ package cluedo.squares;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import cluedo.Position;
-import cluedo.MyUtils;
 import cluedo.Room;
 
 
@@ -27,7 +20,6 @@ public class RoomSquare implements Square {
 	private int roomnum;
 	private Color color;
 	private Room room;
-	private Image image;
 
 	public RoomSquare(Position position, int num) {
 		this.position = position;
@@ -44,12 +36,6 @@ public class RoomSquare implements Square {
 			case 9 : color = Color.decode("#E4BEE8"); break;
 		}
 
-		try {
-			this.image = ImageIO.read(new File("src/images/squares/square-room.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		//MyUtils.Log("[RoomSquare] Created at ("+position.getX()+","+position.getY()+") with room number "+roomnum);
 	}
 

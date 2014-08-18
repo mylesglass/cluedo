@@ -18,6 +18,7 @@ import cluedo.cards.Card;
  *
  */
 
+@SuppressWarnings("serial")
 public class PlayerPanel extends JPanel {
 	// Constants for panel creation
 	private final int CARD_X_POS = 80;

@@ -66,8 +66,8 @@ public class Checklist {
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public HashMap checkList(){
-
 		return checklist;
 
 	}

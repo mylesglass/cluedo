@@ -1,7 +1,7 @@
 package cluedo;
 
 public class MyUtils {
-	private static boolean testing = true;
+	private static boolean testing = false;
 
 	/**
 	 * Simple Logging Tool

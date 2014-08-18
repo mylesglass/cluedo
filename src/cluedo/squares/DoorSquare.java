@@ -22,6 +22,7 @@ import cluedo.Room;
  */
 public class DoorSquare implements Square {
 	private Position position;
+	@SuppressWarnings("unused")
 	private HallSquare hallSquare;
 	private Room room;
 	private Color color;

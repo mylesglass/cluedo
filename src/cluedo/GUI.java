@@ -1,24 +1,15 @@
 package cluedo;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -96,9 +87,6 @@ public class GUI {
 	private Boolean ready = false;
 	private Boolean gameFinished;
 
-	private Boolean canEnter = false;
-	private Boolean inRoom = false;
-
 	//Turn System
 	private Square selectedSquare;
 
@@ -144,15 +132,11 @@ public class GUI {
 					new SFX("src/sounds/door.wav");
 
 				}
-
-
 			}
 
 			//if they try to move to a hallsquare works out what proportion of thier movement they have used in order to walk that far. or if they can move thier at all.
 			if(selectedSquare != null && selectedSquare instanceof HallSquare) {
 				int finalSum;
-
-
 
 				int xDiff= selectedSquare.getPosition().getX()-currentPlayer.getPos().getX();
 				int yDiff= selectedSquare.getPosition().getY()-currentPlayer.getPos().getY();
@@ -160,8 +144,6 @@ public class GUI {
 				yDiff = Math.abs(yDiff);
 
 				finalSum = xDiff+yDiff;
-
-
 
 				if(finalSum <= stepsRemaining) {
 					stepsRemaining = stepsRemaining - finalSum;
@@ -174,9 +156,6 @@ public class GUI {
 
 					currentPlayer.setSquare("H");
 				}
-
-
-
 			}
 		}
 	}
@@ -313,11 +292,8 @@ public class GUI {
 					this.drawGame();
 				}
 			}
-
 		}
-
 	}
-
 
 	public Card checkAccusation(Accusation a){
 		for(Player p: players){
@@ -396,7 +372,6 @@ public class GUI {
 		// Player Panel Component
 		playerPanel = new PlayerPanel(playerPanelWidth, playerPanelHeight);
 		checkListPanel.setPreferredSize(new Dimension(this.playerPanelWidth, this.playerPanelHeight));
-		ImageIcon door = new ImageIcon("cluedo/src/images/openDoor.jpeg");
 
 		// Add Panels to Frame
 		container.add(boardPanel);

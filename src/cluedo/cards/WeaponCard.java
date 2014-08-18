@@ -1,6 +1,5 @@
 package cluedo.cards;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -82,11 +81,6 @@ public class WeaponCard implements Card {
 	 */
 	public void draw(Graphics g, int x, int y, int width, int height) {
 		g.drawImage(this.image,  x,  y,  width, height, null);
-		//g.setColor(Color.WHITE);
-		//g.fillRect(x, y, width, height);
-		//g.setColor(Color.BLACK);
-		//g.drawRect(x, y, width, height);
-		//g.drawString(this.name, x + 20, y + 20);
 	}
 
 	/**
@@ -94,10 +88,5 @@ public class WeaponCard implements Card {
 	 */
 	public void drawIcon(Graphics g, int x, int y, int width, int height) {
 		g.drawImage(this.icon,  x,  y,  width, width, null);
-		//g.setColor(Color.WHITE);
-		//g.fillRect(x, y, width, height);
-		//g.setColor(Color.BLACK);
-		//g.drawRect(x, y, width, height);
-		//g.drawString(this.name, x + 20, y + 20);
 	}
 }

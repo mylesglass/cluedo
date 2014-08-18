@@ -26,13 +26,6 @@ public class Game {
 	private ArrayList<Card> deck;
 	private ArrayList<Room> rooms;
 	private Accusation winningCombo;
-
-
-
-	private ArrayList<String> roomNames;
-	private ArrayList<String> characterNames;
-	private ArrayList<String> weaponNames;
-
 	private ArrayList<WeaponCard> weapons;
 
 	/**
@@ -56,7 +49,6 @@ public class Game {
 		gui.updateCardNames(cardParser.getRoomNames(), cardParser.getCharacterNames(), cardParser.getWeaponNames());
 		MyUtils.Log("[Game] Deck Parsed and Constructed.");
 
-
 		//construct players from cards.
 		characters = new ArrayList<Player>();
 		for(Card c: deck){
@@ -68,6 +60,7 @@ public class Game {
 
 			}
 		}
+
 		// Add colors to each player
 		int i = 0;
 		for(String str : cardParser.getCharacterColors()) {
@@ -115,12 +108,8 @@ public class Game {
 		gui.initialiseGameInterface(board);
 		MyUtils.Log("[Game] GUI dimensions set and board supplied.");
 
-
-
 		// Start GUI on Menu
 		gui.drawGame();
-
-
 
 		//FIXME only works if printing infinite loop??
 		while(true){
@@ -128,8 +117,6 @@ public class Game {
 			if(gui.isReady()){
 				break;
 			}
-
-
 		}
 
 		MyUtils.Log("[Game] made it passed isReady!.");
@@ -160,24 +147,16 @@ public class Game {
 			gui.setCurrentPlayer(players.get(i));
 			int steps = rollDice();
 
-
-
 			if(players.get(i).getSquare().equals("D")){
 
 				DoorSquare door = (DoorSquare)board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY());
-				Boolean b = (board.getSquareAt(players.get(i).getPos().getX(),players.get(i).getPos().getY()) instanceof DoorSquare);
 
 				Room thisRoom = door.getRoom();
 
 				Position pos = thisRoom.getRandPos();
 
-
-
 				players.get(i).setPos(pos);
 				players.get(i).setSquare("R");
-
-
-
 
 			}
 
@@ -188,8 +167,6 @@ public class Game {
 			if(players.get(i).getSquare().equals("H")){
 				gui.takeTurn(steps);
 			}
-
-
 
 			if(i==players.size()-1){
 				i=0;
@@ -203,7 +180,6 @@ public class Game {
 
 		MyUtils.Log("[GAME] you won!????");
 	}
-
 
 	/**
 	 * Get board
@@ -223,7 +199,6 @@ public class Game {
 		MyUtils.Log("[Game] User has rolled a: "+random);
 		return random;
 	}
-
 
 	/**
 	 * initialises all players based on the gui's list of players who are active i.e.
@@ -251,8 +226,6 @@ public class Game {
 		player.addChecklist(new Checklist(gui.roomNames, gui.characterNames, gui.weaponNames));
 		// deal cards
 		this.gui.initialiseCheckPanel();
-
-
 		gui.drawGame();
 	}
 
@@ -271,7 +244,6 @@ public class Game {
 		RoomCard room = null;
 		WeaponCard weap = null;
 
-
 		for(Card c: deck){
 			if(c instanceof CharacterCard){ charac= (CharacterCard) c;}
 			if(c instanceof WeaponCard){ weap= (WeaponCard) c;}
@@ -283,6 +255,7 @@ public class Game {
 
 		winningCombo = new Accusation(charac.getName(), room.getName(), weap.getName());
 		gui.setWinner(winningCombo);
+		@SuppressWarnings("unused")
 		int c = 0;
 		int i= 0;
 		int j=0;
@@ -298,6 +271,4 @@ public class Game {
 			else{i++;}
 		}
 	}
-
-	
 }

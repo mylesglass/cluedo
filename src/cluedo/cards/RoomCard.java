@@ -1,6 +1,5 @@
 package cluedo.cards;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -12,7 +11,6 @@ import cluedo.MyUtils;
 
 /**
  * Room Card
- * xxx
  * @author myles && Neal
  *
  */

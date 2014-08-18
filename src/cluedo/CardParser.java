@@ -19,7 +19,6 @@ import cluedo.cards.WeaponCard;
  */
 public class CardParser {
 
-
 	private ArrayList<Card> cards;
 	private ArrayList<String> roomNames;
 	private ArrayList<String> characterNames;

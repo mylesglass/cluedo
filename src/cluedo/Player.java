@@ -7,7 +7,6 @@ import java.util.List;
 
 import cluedo.cards.Card;
 import cluedo.cards.CharacterCard;
-import cluedo.squares.Square;
 
 public class Player {
 

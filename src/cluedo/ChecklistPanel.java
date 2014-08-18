@@ -6,12 +6,13 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
 import cluedo.cards.CharacterCard;
 
+@SuppressWarnings("serial")
 public class ChecklistPanel extends JPanel {
 	private int width;
 	private int height;
@@ -28,10 +29,12 @@ public class ChecklistPanel extends JPanel {
 
 	private Player currentPlayer;
 
-	private boolean hasInit = false;
+	@SuppressWarnings("unused")
+	private boolean hasInit;
 	private boolean playerAdded;
 
 	public ChecklistPanel(int width, int height) {
+		this.hasInit = false;
 		this.width = width;
 		this.height = height;
 		MyUtils.Log("[CheckListPanel] Check List Panel Created. Size: "+this.width+", "+this.height);

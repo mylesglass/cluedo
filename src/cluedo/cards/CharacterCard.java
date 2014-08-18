@@ -1,6 +1,5 @@
 package cluedo.cards;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -60,13 +59,7 @@ public class CharacterCard implements Card {
 	 * Draws card on Player Panel graphics component
 	 */
 	public void draw(Graphics g, int x, int y, int width, int height) {
-		//g.setColor(Color.WHITE);
-		//g.fillRect(x, y, width, height);
 		g.drawImage(this.image, x, y, width, height, null);
-
-		//g.setColor(Color.BLACK);
-		//g.drawRect(x, y, width, height);
-		//g.drawString(this.name, x + 20, y + 20);
 	}
 
 	/**

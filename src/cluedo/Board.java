@@ -1,6 +1,5 @@
 package cluedo;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -115,7 +114,6 @@ public class Board {
 		}
 	}
 
-
 	public ArrayList<Room> addSquaresToRooms(ArrayList<Room> rooms) {
 		for(int h = 0; h < this.height; h++) {
 			for(int w = 0; w < this.width; w++) {
@@ -126,7 +124,6 @@ public class Board {
 				}
 			}
 		}
-
 		return rooms;
 	}
 

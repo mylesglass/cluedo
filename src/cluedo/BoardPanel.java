@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 
 import cluedo.cards.WeaponCard;
 import cluedo.squares.RoomSquare;
-import cluedo.squares.Square;
 
+@SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 	private final int SQUARE_SIZE = 25;
 	private int width;

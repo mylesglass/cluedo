@@ -7,7 +7,6 @@ import java.awt.event.WindowListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -39,7 +38,7 @@ public class RadioListener implements WindowListener{
 
 		JPanel panel = new JPanel();
 		JRadioButton yes = new JRadioButton("Yes");
-		JRadioButton no = new JRadioButton("no");
+		JRadioButton no = new JRadioButton("No");
 
 		 ActionListener aL = new ActionListener() {
 
@@ -51,7 +50,6 @@ public class RadioListener implements WindowListener{
 
 		        }};
 
-		JButton button = new JButton("confirm");
         ButtonGroup group = new ButtonGroup();
         group.add(yes);
         group.add(no);
@@ -61,7 +59,8 @@ public class RadioListener implements WindowListener{
         no.addActionListener(aL);
 
 
-	    int result = JOptionPane.showOptionDialog(null,panel,"Do you want to close?",JOptionPane.DEFAULT_OPTION,
+	    @SuppressWarnings("unused")
+		int result = JOptionPane.showOptionDialog(null,panel,"Do you want to close?",JOptionPane.DEFAULT_OPTION,
 	    	    JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 
