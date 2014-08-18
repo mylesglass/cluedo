@@ -257,7 +257,10 @@ public class GUI {
 
 						int readerBewareYouChoosetheScare = JOptionPane.showConfirmDialog(container,  "You just won man!!!! Collect your prize?",null, JOptionPane.YES_NO_OPTION);
 
-						if(readerBewareYouChoosetheScare == JOptionPane.YES_OPTION) {JOptionPane.showMessageDialog(container,  "Your prize is the honour of getting to give us an A+ ;)");}
+						if(readerBewareYouChoosetheScare == JOptionPane.YES_OPTION) {
+							JOptionPane.showMessageDialog(container,  "Your prize is the honour of getting to give us an A+ ;)");
+							System.exit(0);
+						}
 
 
 

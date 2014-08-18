@@ -1,11 +1,15 @@
-/cluedo/
-/images/
 /boards/
+/cards.txt
+/cluedo/
 /cluedoTestSuite/
-/music/
+/images/
 /sound/
+<<<<<<< HEAD
 /sounds/
 /cards/
 /img/
 /char/
 /images.char/
+=======
+>>>>>>> 34b2d5a5dc4b37e79f3d8b1d99bb4e64028db77e
+/music/

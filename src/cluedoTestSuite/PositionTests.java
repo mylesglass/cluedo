@@ -37,9 +37,7 @@ public class PositionTests {
 	
 	@Test public void testtoString(){
 		 Position p = new Position(1, 1);
-		 System.out.println(p.toString());
 		 assertTrue(p.toString().equals("(1,1"));
-		 
 		}
 	@Test public void testtoStringFalse(){
 		 Position p = new Position(1, 1);
