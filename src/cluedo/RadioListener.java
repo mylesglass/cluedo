@@ -65,6 +65,10 @@ public class RadioListener implements WindowListener{
 	    	    JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 
+	    if(selected == null){
+
+	    	System.exit(0);
+	    }
        if(selected.equals("Yes")){
     	  System.exit(0);
 

@@ -11,8 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -20,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import sound.SFX;
+import sound.SoundTrack;
 import cluedo.cards.Accusation;
 import cluedo.cards.Card;
 import cluedo.cards.WeaponCard;
@@ -76,6 +81,8 @@ public class GUI {
 	private Player currentPlayer;
 	private ArrayList<Player> players;
 
+    //Sound components
+	SoundTrack music;
 
 	// GUI Components
 	private BoardPanel boardPanel;
@@ -134,6 +141,7 @@ public class GUI {
 					drawBoard();
 					currentPlayer.setSquare("D");
 					stepsRemaining = 0;
+					new SFX("src/sounds/door.wav");
 
 				}
 
@@ -233,15 +241,19 @@ public class GUI {
 			if(clue!=null){
 
 				currentPlayer.getChecklist().checkOff(clue) ;
-				JOptionPane.showMessageDialog(container,"you got this card: "+clue.getName());
+				JOptionPane.showMessageDialog(container,"you have been shown evidence disputing "+clue.getName()+ ", and have checked it off. ");
 			}
 
 			else{
-				int finale = JOptionPane.showConfirmDialog(container,  "Do you wish to make a accusation!?",null, JOptionPane.YES_NO_OPTION);
+				int finale = JOptionPane.showConfirmDialog(container,  "Do you wish to make this accusation!?",null, JOptionPane.YES_NO_OPTION);
 				if(finale == JOptionPane.YES_OPTION) {
 
 
 					if(suggestion.equals(winner)){
+
+						music.stopMusic();
+						new SFX("src/sounds/applause.wav");
+
 
 						int readerBewareYouChoosetheScare = JOptionPane.showConfirmDialog(container,  "You just won man!!!! Collect your prize?",null, JOptionPane.YES_NO_OPTION);
 
@@ -251,9 +263,10 @@ public class GUI {
 
 					}
 					else{
+						new SFX("src/sounds/peoplelaugh.wav");
 						JOptionPane.showMessageDialog(container,  "You risked it for the biscuit and unfortuantely it didn't pay off, now you have to give us an A+.");
 						currentPlayer.setSquare("$");
-
+						JOptionPane.showMessageDialog(container,  "remaining players may keep playing.");
 
 
 					}
@@ -308,7 +321,7 @@ public class GUI {
 			for(Card c: p.getHand()){
 				// FIXME cancel both and get null point exception
 				if(a.getKiller().equals(c.getName())   ||  a.getWeapon().equals(c.getName()) || a.getScene().equals(c.getName())   ){
-
+					JOptionPane.showMessageDialog(container, p.getName()+ " has evidence to dispute your claim!");
 					return c;
 				}
 			}
@@ -391,7 +404,7 @@ public class GUI {
 
 		// Once all set up, make it visible
 		container.setVisible(true);
-
+		JOptionPane.showMessageDialog(container,  "Connect your speaker/ headphones : Dolby Atmos (tm) capable : 3D surround sound");
 
 		usernames = new ArrayList<String>();
 
@@ -403,6 +416,15 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				// Construct empty list for storing character names
+				new SFX("src/sounds/psycho.wav");
+				JOptionPane.showMessageDialog(container,  "Mr Black has been murdered! this has taken place while you and your fellow vacationers have been staying  at Colonel Mustards"
+						+ " isolated manor home.");
+				JOptionPane.showMessageDialog(container,  "Who is the murderer?! it is up to you and your fellow vacationers to deduce this.");
+				JOptionPane.showMessageDialog(container,  "It could be your closest friend....it could even be you!  Only one way to find out... ");
+				JOptionPane.showMessageDialog(container,  "Let the games begin!! ");
+
+				music = new SoundTrack();
+				music.StartMusic();
 				charactersInPlay = new ArrayList<String>();
 
 				String[] names = new String[characterNames.size()];
@@ -429,7 +451,13 @@ public class GUI {
 					MyUtils.Log("[GUI] player selected: " + selection);
 
 					if(selection == null){
-						MyUtils.End("[GUI][INIT] Player failed to pick a character.");
+						i--;
+
+					
+						JOptionPane.showMessageDialog(container,  "you selected a non active character, closing program.");
+
+						System.exit(0);
+						//MyUtils.End("[GUI][INIT] Player failed to pick a character.");
 					}
 
 					charactersInPlay.add((String) selection);
@@ -452,6 +480,11 @@ public class GUI {
 			}
 
 		});
+
+
+
+
+
 	}
 
 	/**
